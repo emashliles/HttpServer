@@ -7,25 +7,29 @@ import java.net.Socket;
 public class Main {
 
     public static void main(String[] args) {
+        while (true) {
             run();
+        }
     }
 
     public static void run() {
-        String req;
+        Router router = new Router();
+        router.add(new SimpleHandler());
+        router.add(new CoffeeHandler());
         try {
             try (ServerSocket serverSocket = new ServerSocket(5000);
             Socket clientSocket = serverSocket.accept();
             PrintWriter out =
                     new PrintWriter(clientSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(
-                    new InputStreamReader(clientSocket.getInputStream()));
-            ) {
-
+                    new InputStreamReader(clientSocket.getInputStream()))) {
                 RequestParser parser = new RequestParser();
+                Request request = new Request(parser.parseRequest(in));
 
-                req = parser.parseRequest(in);
+                Handler handler = router.find(request.path());
+                Response response = handler.handleRequest(request);
 
-                out.println(req);
+                out.println(response.getStatusCode());
             }
 
         } catch (Exception e) {

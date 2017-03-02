@@ -4,6 +4,7 @@ public class RequestParser {
     public String parseRequest(BufferedReader in) {
         String request = "";
         String line;
+
         try {
             while ((line = in.readLine()) != null) {
                 if(line.equals("")) {
