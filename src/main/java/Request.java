@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,5 +23,13 @@ public class Request {
 
     public String httpMethod() {
         return method;
+    }
+
+    public String httpVersion() {
+        return httpVersion;
+    }
+
+    public String path() {
+        return path;
     }
 }
