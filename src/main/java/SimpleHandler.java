@@ -1,7 +1,13 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimpleHandler implements Handler {
-    @Override
-    public String path() {
-        return "/";
+
+    private final List<String> paths;
+
+    public SimpleHandler() {
+        paths = new ArrayList<>();
+        paths.add("/");
     }
 
     @Override
@@ -9,5 +15,15 @@ public class SimpleHandler implements Handler {
         Response response = new Response();
         response.setStatusCode("200 OK");
         return response;
+    }
+
+    @Override
+    public boolean canHandle(String requestedPath) {
+       for(String path : paths) {
+           if(path.equals(requestedPath)) {
+               return true;
+           }
+       }
+       return false;
     }
 }

@@ -10,7 +10,7 @@ public class Router {
 
     public Handler find(String path) {
         for(Handler handler : handlers) {
-            if(handler.path().equals(path)) {
+            if(handler.canHandle(path)) {
                 return handler;
             }
         }

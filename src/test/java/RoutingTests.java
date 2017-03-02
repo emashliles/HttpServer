@@ -12,7 +12,7 @@ public class RoutingTests {
         Handler simpleGetHandler = router.find("/");
         Handler coffeeHandler = router.find("/coffee");
 
-        assertEquals("/", simpleGetHandler.path());
-        assertEquals("/coffee", coffeeHandler.path());
+        assertEquals(true, simpleGetHandler.canHandle("/"));
+        assertEquals(true, coffeeHandler.canHandle("/coffee"));
     }
 }
