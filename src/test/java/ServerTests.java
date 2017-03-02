@@ -27,13 +27,7 @@ public class ServerTests {
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(
                         connection.getInputStream()));
-        String response = "";
-        String responseLine;
         Map<String, List<String>> headerFields = connection.getHeaderFields();
-
-        while ((responseLine = in.readLine()) != null) {
-            response += responseLine;
-        }
         in.close();
 
         assertEquals("HTTP/1.1 200 OK", headerFields.get(null).get(0));

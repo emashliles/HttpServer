@@ -39,4 +39,13 @@ public class HandlerTests {
         assertEquals("200 OK", handler.handleRequest(teaRequest).getStatusCode());
         assertEquals("418 I'm a teapot", handler.handleRequest(coffeeRequest).getStatusCode());
     }
+
+    @Test
+    public void handleRedirect() {
+        Request request = new Request("GET /redirect HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
+
+        Handler handler = new RedirectHandler();
+
+        assertEquals("302 Redirect", handler.handleRequest(request).getStatusCode());
+    }
 }
