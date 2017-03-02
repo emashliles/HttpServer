@@ -27,9 +27,13 @@ public class Main {
                 Request request = new Request(parser.parseRequest(in));
 
                 Handler handler = router.find(request.path());
-                Response response = handler.handleRequest(request);
-
-                out.println(response.getStatusCode());
+                if(handler == null) {
+                    out.println("404");
+                }
+                else {
+                    Response response = handler.handleRequest(request);
+                    out.println(response.getStatusCode());
+                }
             }
 
         } catch (Exception e) {

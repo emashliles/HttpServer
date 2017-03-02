@@ -8,12 +8,19 @@ public class CoffeeHandler implements Handler {
     public CoffeeHandler() {
         paths = new ArrayList<>();
         paths.add("/coffee");
+        paths.add("/tea");
     }
 
     @Override
     public Response handleRequest(Request request) {
         Response response = new Response();
-        response.setStatusCode("200 OK");
+
+        if(request.path().equals("/tea")) {
+            response.setStatusCode("200");
+        }
+        else {
+            response.setStatusCode("418");
+        }
         return response;
     }
 

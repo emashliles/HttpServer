@@ -11,7 +11,7 @@ public class HandlerTests {
         Handler handler = new SimpleHandler();
         Response response = handler.handleRequest(request);
 
-        assertEquals("200 OK", response.getStatusCode());
+        assertEquals("200", response.getStatusCode());
     }
 
     @Test
@@ -28,5 +28,15 @@ public class HandlerTests {
         Handler handler = new SimpleHandler();
 
         assertFalse(handler.canHandle(request.path()));
+    }
+
+    @Test
+    public void handleMultipleRequests() {
+        Request coffeeRequest = new Request("GET /coffee HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
+        Request teaRequest = new Request("GET /tea HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
+        Handler handler = new CoffeeHandler();
+
+        assertEquals("200", handler.handleRequest(teaRequest).getStatusCode());
+        assertEquals("418", handler.handleRequest(coffeeRequest).getStatusCode());
     }
 }
