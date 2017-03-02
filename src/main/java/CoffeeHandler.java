@@ -16,10 +16,10 @@ public class CoffeeHandler implements Handler {
         Response response = new Response();
 
         if(request.path().equals("/tea")) {
-            response.setStatusCode("200");
+            response.setStatusCode("200 OK");
         }
         else {
-            response.setStatusCode("418");
+            response.setStatusCode("418 I'm a teapot");
         }
         return response;
     }
