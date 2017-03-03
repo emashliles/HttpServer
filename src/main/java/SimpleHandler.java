@@ -14,6 +14,7 @@ public class SimpleHandler implements Handler {
     public Response handleRequest(Request request) {
         Response response = new Response();
         response.setStatusCode("200 OK");
+        response.setBody("Server Content");
         return response;
     }
 
