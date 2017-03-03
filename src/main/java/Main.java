@@ -23,6 +23,7 @@ public class Main {
         router.add(new RedirectHandler());
         router.add(new File1Handler());
         router.add(new TextFileHandler());
+        router.add(new FormHandler());
         router.add(new NotFoundHandler());
         try {
             try (ServerSocket serverSocket = new ServerSocket(5000);

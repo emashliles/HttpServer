@@ -80,4 +80,14 @@ public class HandlerTests {
         assertEquals("200 OK", handler.handleRequest(getRequest).getStatusCode());
         assertEquals("405 Method Not Allowed", handler.handleRequest(putRequest).getStatusCode());
     }
+
+    @Test
+    public void handlePost() {
+        Request request = new Request("POST /form HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
+        Handler handler = new FormHandler();
+
+        Response response = handler.handleRequest(request);
+
+        assertEquals("200 OK", response.getStatusCode());
+    }
 }
