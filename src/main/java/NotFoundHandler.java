@@ -2,7 +2,7 @@ public class NotFoundHandler implements Handler {
     @Override
     public Response handleRequest(Request request) {
         Response response = new Response();
-        response.setStatusCode("404 Not Found");
+        response.setStatusCode(HttpStatus.NotFound.code());
         return response;
     }
 

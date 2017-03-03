@@ -13,7 +13,7 @@ public class SimpleHandler implements Handler {
     @Override
     public Response handleRequest(Request request) {
         Response response = new Response();
-        response.setStatusCode("200 OK");
+        response.setStatusCode(HttpStatus.OK.code());
         response.setBody("Server Content");
         return response;
     }

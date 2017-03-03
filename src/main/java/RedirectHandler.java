@@ -2,7 +2,7 @@ public class RedirectHandler implements Handler {
     @Override
     public Response handleRequest(Request request) {
         Response response = new Response();
-        response.setStatusCode("302 Redirect");
+        response.setStatusCode(HttpStatus.Redirect.code());
         response.setBody("http://localhost:5000/");
         response.setLocation("Location: http://localhost:5000/");
         return response;
