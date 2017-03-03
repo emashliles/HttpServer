@@ -70,4 +70,15 @@ public class HandlerTests {
         assertEquals("418 I'm a teapot", response.getStatusCode());
         assertEquals("I'm a teapot", response.getBody());
     }
+
+    @Test
+    public void handleOnlySpecifiedMethods() {
+        Request getRequest = new Request("GET /file1 HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
+        Request putRequest = new Request("PUT /file1 HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
+        Handler handler = new File1Handler();
+
+        assertEquals("200 OK", handler.handleRequest(getRequest).getStatusCode());
+        assertEquals("405 Method Not Allowed", handler.handleRequest(putRequest).getStatusCode());
+
+    }
 }

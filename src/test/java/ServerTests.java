@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -73,7 +74,6 @@ public class ServerTests {
 
         server.start();
 
-
         URL url = new URL("http://localhost:5000/foobar");
 
         URLConnection connection = url.openConnection();
@@ -85,6 +85,31 @@ public class ServerTests {
         }
         catch (Exception e) {
             assertTrue(e instanceof FileNotFoundException);
+
+        }
+    }
+
+    @Test
+    public void canHandleMethodNotAllowed() throws IOException {
+        Thread server = new Thread(() -> {
+            Main.start();
+        });
+
+        server.start();
+
+        URL url = new URL("http://localhost:5000/file1");
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setRequestMethod("PUT");
+
+        try {
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(
+                            connection.getInputStream()));
+        }
+        catch (IOException e) {
+            assertTrue(e.getMessage().equals("Server returned HTTP response code: 405 for URL: http://localhost:5000/file1"));
 
         }
     }
