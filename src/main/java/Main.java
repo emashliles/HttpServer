@@ -21,6 +21,7 @@ public class Main {
         router.add(new SimpleHandler());
         router.add(new CoffeeHandler());
         router.add(new RedirectHandler());
+        router.add(new NotFoundHandler());
         try {
             try (ServerSocket serverSocket = new ServerSocket(5000);
                  Socket clientSocket = serverSocket.accept();
@@ -37,14 +38,8 @@ public class Main {
 
                 ResponseWriter responseWriter = new ResponseWriter();
 
-                if(handler == null) {
-                    out.println("HTTP/1.1 404 Not Found");
-                }
-                else {
-                    Response response = handler.handleRequest(request);
-                    out.println(responseWriter.responseString(response));
-                }
-
+                Response response = handler.handleRequest(request);
+                out.println(responseWriter.responseString(response));
             }
 
         } catch (Exception e) {
