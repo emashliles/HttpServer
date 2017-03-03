@@ -20,6 +20,7 @@ public class CoffeeHandler implements Handler {
         }
         else {
             response.setStatusCode("418 I'm a teapot");
+            response.setBody("I'm a teapot");
         }
         return response;
     }

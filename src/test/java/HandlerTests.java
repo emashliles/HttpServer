@@ -56,6 +56,16 @@ public class HandlerTests {
         Handler handler = new NotFoundHandler();
 
         assertEquals("404 Not Found", handler.handleRequest(request).getStatusCode());
+    }
 
+    @Test
+    public void includeResponseBody() {
+        Request coffeeRequest = new Request("GET /coffee HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
+        Handler handler = new CoffeeHandler();
+
+        Response response = handler.handleRequest(coffeeRequest);
+
+        assertEquals("418 I'm a teapot", response.getStatusCode());
+        assertEquals("I'm a teapot", response.getBody());
     }
 }
