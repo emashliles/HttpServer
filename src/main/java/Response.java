@@ -1,6 +1,7 @@
 public class Response {
     private String statusCode;
     private String body;
+    private String location;
 
     public void setStatusCode(String statusCode) {
         this.statusCode = statusCode;
@@ -16,5 +17,13 @@ public class Response {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

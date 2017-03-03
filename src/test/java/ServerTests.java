@@ -59,7 +59,7 @@ public class ServerTests {
         }
 
         in.close();
-        
+
         assertEquals("HTTP/1.1 200 OK", headerFields.get(null).get(0));
         assertEquals("Server Content", body);
 
