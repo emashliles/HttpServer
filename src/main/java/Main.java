@@ -34,12 +34,15 @@ public class Main {
                 Request request = new Request(parser.parseRequest(in));
 
                 Handler handler = router.find(request.path());
+
+                ResponseWriter responseWriter = new ResponseWriter();
+
                 if(handler == null) {
                     out.println("HTTP/1.1 404 Not Found");
                 }
                 else {
                     Response response = handler.handleRequest(request);
-                    out.println("HTTP/1.1 " + response.getStatusCode());
+                    out.println(responseWriter.responseString(response));
                 }
 
             }
