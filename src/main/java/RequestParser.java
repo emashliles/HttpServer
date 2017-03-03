@@ -15,6 +15,7 @@ public class RequestParser {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.print(request);
         return request;
     }
 }

@@ -1,6 +1,6 @@
-public class File1Handler extends HandlerBase implements Handler {
+public class TextFileHandler extends HandlerBase implements Handler {
 
-    public File1Handler() {
+    public TextFileHandler() {
         super();
     }
 
@@ -12,14 +12,14 @@ public class File1Handler extends HandlerBase implements Handler {
             response.setStatusCode(HttpStatus.MethodNotAllowed.code());
             return response;
         }
-            response.setStatusCode(HttpStatus.OK.code());
 
+        response.setStatusCode(HttpStatus.OK.code());
         return response;
     }
 
     @Override
     public boolean canHandle(String path) {
-        return path.equals("/file1");
+        return path.equals("/text-file.txt");
     }
 
     @Override

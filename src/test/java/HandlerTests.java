@@ -79,6 +79,5 @@ public class HandlerTests {
 
         assertEquals("200 OK", handler.handleRequest(getRequest).getStatusCode());
         assertEquals("405 Method Not Allowed", handler.handleRequest(putRequest).getStatusCode());
-
     }
 }

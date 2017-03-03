@@ -1,14 +1,20 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class CoffeeHandler implements Handler {
+public class CoffeeHandler extends HandlerBase implements Handler {
 
     private List<String> paths;
 
     public CoffeeHandler() {
+        super();
         paths = new ArrayList<>();
         paths.add("/coffee");
         paths.add("/tea");
+    }
+
+    @Override
+    protected void addAllowedMethods() {
+        allowedMethods.add("GET");
     }
 
     @Override
