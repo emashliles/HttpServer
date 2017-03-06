@@ -35,4 +35,11 @@ public class DirectoryTests {
 
         assertEquals("file1 contents", body.toString());
     }
+
+    @Test
+    public void findContentType() {
+        PublicDirectory publicDirectory = new PublicDirectory("public");
+
+        assertEquals("image/jpeg", publicDirectory.getContentType("image.jpeg"));
+    }
 }

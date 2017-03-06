@@ -2,7 +2,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.FileNameMap;
 import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,5 +53,19 @@ public class PublicDirectory {
         }
 
         return fileBytes;
+    }
+
+    public String getContentType(String fileName) {
+        URL resource = getClass().getResource(directoryName + "/" + fileName);
+        String type = "";
+
+        try {
+            FileNameMap fileNameMap = resource.openConnection().getFileNameMap();
+            type = fileNameMap.getContentTypeFor(fileName);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return type;
     }
 }

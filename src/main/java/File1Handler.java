@@ -16,11 +16,11 @@ public class File1Handler extends HandlerBase implements Handler {
         }
             response.setStatusCode(HttpStatus.OK.code());
 
-        response.addHeader("Content-Type", "text/plain");
 
         PublicDirectory publicDirectory = new PublicDirectory("public");
-
         response.setBody(publicDirectory.getFileContent("file1"));
+
+        response.addHeader("Content-Type", "text/plain");
 
         return response;
     }
