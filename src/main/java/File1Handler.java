@@ -1,3 +1,5 @@
+import java.io.File;
+
 public class File1Handler extends HandlerBase implements Handler {
 
     public File1Handler() {

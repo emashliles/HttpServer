@@ -34,6 +34,7 @@ public class ServerTests {
         in.close();
 
         assertEquals("HTTP/1.1 200 OK", headerFields.get(null).get(0));
+        assertEquals("text/plain", connection.getContentType());
     }
 
     @Test
@@ -62,8 +63,8 @@ public class ServerTests {
         in.close();
 
         assertEquals("HTTP/1.1 200 OK", headerFields.get(null).get(0));
-        assertEquals("Server Content", body);
-
+        assertEquals("file1file2image.gifimage.jpegimage.pngpartial_content.txtpatch-content.txttext-file.txt", body);
+        assertEquals("text/plain", connection.getContentType());
     }
 
     @Test

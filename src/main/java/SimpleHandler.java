@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,18 @@ public class SimpleHandler implements Handler {
     public Response handleRequest(Request request) {
         Response response = new Response();
         response.setStatusCode(HttpStatus.OK.code());
-        response.setBody("Server Content");
+
+        PublicDirectory publicDirectory = new PublicDirectory("public");
+        String body = "";
+
+        for (String file : publicDirectory.getFiles()) {
+            body += (file + "\r\n");
+        }
+
+        response.addHeader("Content-Type", "text/plain");
+
+        response.setBody(body);
+
         return response;
     }
 

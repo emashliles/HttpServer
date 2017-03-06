@@ -3,6 +3,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class ResponseTests {
+    
     @Test
     public void addHeaderToResponse() {
         Response response = new Response();
