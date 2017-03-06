@@ -7,7 +7,6 @@ import java.net.Socket;
 public class Main {
 
     public static void main(String[] args) {
-
         start();
     }
 
@@ -27,6 +26,8 @@ public class Main {
             router.add(new TextFileHandler());
             router.add(new FormHandler());
             router.add(new ParametersHandler());
+            router.add(new MethodOptionsHandler());
+            router.add(new MethodOptions2Handler());
             router.add(new NotFoundHandler());
             try (ServerSocket serverSocket = new ServerSocket(5000);
                  Socket clientSocket = serverSocket.accept();

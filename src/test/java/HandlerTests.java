@@ -90,4 +90,14 @@ public class HandlerTests {
 
         assertEquals("200 OK", response.getStatusCode());
     }
+
+    @Test
+    public void handleOptions() {
+        Request request = new Request("OPTIONS /method_options HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
+        Handler handler = new MethodOptionsHandler();
+
+        Response response = handler.handleRequest(request);
+
+        assertEquals("GET,HEAD,POST,OPTIONS,PUT", response.getParameters().get("Allow"));
+    }
 }
