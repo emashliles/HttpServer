@@ -14,6 +14,7 @@ public class Request {
     private boolean hasRange;
     private int rangeStart;
     private int rangeEnd;
+    private String cookieData;
 
     public Request(String rawRequest) {
 
@@ -37,6 +38,10 @@ public class Request {
                 String[] rawRanges = header.split(":")[1].split("=")[1].split("-");
                 rangeStart = Integer.parseInt(rawRanges[0]);
                 rangeEnd = Integer.parseInt(rawRanges[1]);
+            }
+
+            if(header.contains("Cookie")) {
+                this.cookieData = header.split(":")[1];
             }
         }
 
@@ -107,5 +112,9 @@ public class Request {
 
     public int rangeEnd() {
         return this.rangeEnd;
+    }
+
+    public String cookieData() {
+        return this.cookieData;
     }
 }

@@ -9,13 +9,29 @@ public class CookieHandler extends HandlerBase implements Handler {
 
         response.setStatusCode(HttpStatus.OK.code());
 
-        response.setBody("Eat".getBytes());
+        if(request.path().equals("/eat_cookie")) {
+            String body = "mmmm" + request.cookieData();
+            response.setBody(body.getBytes());
+        }
+        else {
+            response.setBody("Eat".getBytes());
+
+            String cookieData = "";
+
+            for (String parameter :request.parameters()) {
+                if(parameter.contains("type")) {
+                    cookieData = parameter.split("=")[1];
+                }
+            }
+            response.addHeader("Set-Cookie", cookieData);
+        }
+
         return response;
     }
 
     @Override
     public boolean canHandle(String path) {
-        return path.equals("/cookie");
+        return (path.equals("/cookie") || path.equals("/eat_cookie"));
     }
 
     @Override

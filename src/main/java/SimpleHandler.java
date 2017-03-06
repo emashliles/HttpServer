@@ -68,7 +68,7 @@ public class SimpleHandler extends HandlerBase implements Handler {
 
     private byte[] directoryLinks() {
 
-        String body = "";
+        String body = "<html><head></head><body>";
 
         for (String file : publicDirectory.getFiles()) {
             body += "<a href=\"";
@@ -77,6 +77,8 @@ public class SimpleHandler extends HandlerBase implements Handler {
             body += file;
             body += "</a></br>";
         }
+
+        body += "</body></html>";
 
         return body.getBytes();
     }
