@@ -34,7 +34,7 @@ public class ServerTests {
         in.close();
 
         assertEquals("HTTP/1.1 200 OK", headerFields.get(null).get(0));
-        assertEquals("text/plain", connection.getContentType());
+        assertEquals("text/html", connection.getContentType());
     }
 
     @Test
@@ -63,8 +63,8 @@ public class ServerTests {
         in.close();
 
         assertEquals("HTTP/1.1 200 OK", headerFields.get(null).get(0));
-        assertEquals("file1file2image.gifimage.jpegimage.pngpartial_content.txtpatch-content.txttext-file.txt", body);
-        assertEquals("text/plain", connection.getContentType());
+        assertTrue(body.contains("<a href=\"http://localhost:5000/file1\">file1</a>"));
+        assertEquals("text/html", connection.getContentType());
     }
 
     @Test

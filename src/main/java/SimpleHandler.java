@@ -20,10 +20,14 @@ public class SimpleHandler implements Handler {
         String body = "";
 
         for (String file : publicDirectory.getFiles()) {
-            body += (file + "\r\n");
+            body += "<a href=\"";
+            body += ("http://localhost:5000/" + file + "\"");
+            body += ">";
+            body += file;
+            body += "</a></br>";
         }
 
-        response.addHeader("Content-Type", "text/plain");
+        response.addHeader("Content-Type", "text/html");
 
         response.setBody(body);
 
