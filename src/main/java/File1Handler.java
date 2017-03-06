@@ -20,7 +20,7 @@ public class File1Handler extends HandlerBase implements Handler {
         PublicDirectory publicDirectory = new PublicDirectory("public");
         response.setBody(publicDirectory.getFileContent("file1"));
 
-        response.addHeader("Content-Type", "text/plain");
+        response.addHeader("Content-Type", publicDirectory.getContentType("file1"));
 
         return response;
     }

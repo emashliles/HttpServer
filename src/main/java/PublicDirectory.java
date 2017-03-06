@@ -57,11 +57,15 @@ public class PublicDirectory {
 
     public String getContentType(String fileName) {
         URL resource = getClass().getResource(directoryName + "/" + fileName);
-        String type = "";
+        String type = "text/plain";
 
         try {
             FileNameMap fileNameMap = resource.openConnection().getFileNameMap();
-            type = fileNameMap.getContentTypeFor(fileName);
+            String contentType = fileNameMap.getContentTypeFor(fileName);
+
+            if(contentType != null) {
+                type = contentType;
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -42,4 +42,11 @@ public class DirectoryTests {
 
         assertEquals("image/jpeg", publicDirectory.getContentType("image.jpeg"));
     }
+
+    @Test
+    public void defaultContentType() {
+        PublicDirectory publicDirectory = new PublicDirectory("public");
+
+        assertEquals("text/plain", publicDirectory.getContentType("file1"));
+    }
 }
