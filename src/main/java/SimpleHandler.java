@@ -29,7 +29,7 @@ public class SimpleHandler implements Handler {
 
         response.addHeader("Content-Type", "text/html");
 
-        response.setBody(body);
+        response.setBody(body.getBytes());
 
         return response;
     }

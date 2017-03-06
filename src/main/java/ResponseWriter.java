@@ -16,11 +16,9 @@ public class ResponseWriter {
             }
         }
 
-       if(response.getBody() != null) {
-           responseToWrite += "\r\n\r\n";
-           responseToWrite += response.getBody();
-       }
-
+        if(response.getBody() != null) {
+            responseToWrite += "\r\n\r\n";
+        }
        return responseToWrite;
     }
 }

@@ -26,7 +26,7 @@ public class CoffeeHandler extends HandlerBase implements Handler {
         }
         else {
             response.setStatusCode(HttpStatus.ImATeapot.code());
-            response.setBody("I'm a teapot");
+            response.setBody("I'm a teapot".getBytes());
         }
         return response;
     }

@@ -9,7 +9,7 @@ public class CookieHandler extends HandlerBase implements Handler {
 
         response.setStatusCode(HttpStatus.OK.code());
 
-        response.setBody("Eat");
+        response.setBody("Eat".getBytes());
         return response;
     }
 

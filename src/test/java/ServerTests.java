@@ -68,6 +68,37 @@ public class ServerTests {
     }
 
     @Test
+    public void canReturnFileContents() throws IOException {
+        Thread server = new Thread(() -> {
+            Main.start();
+        });
+
+        server.start();
+
+        URL url = new URL("http://localhost:5000/file1");
+
+        URLConnection connection = url.openConnection();
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(
+                        connection.getInputStream()));
+        Map<String, List<String>> headerFields = connection.getHeaderFields();
+
+        String line = "";
+        String body = "";
+        while ((line = in.readLine()) != null) {
+            body += line;
+        }
+
+        in.close();
+
+        assertEquals("HTTP/1.1 200 OK", headerFields.get(null).get(0));
+        assertTrue(body.contains("file1 contents"));
+        assertEquals("text/plain", connection.getContentType());
+
+    }
+
+    @Test
     public void canHandleNonExistantPages() throws IOException {
         Thread server = new Thread(() -> {
             Main.start();

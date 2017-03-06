@@ -24,7 +24,7 @@ public class ParametersHandler extends HandlerBase implements Handler {
         }
 
         response.setStatusCode(HttpStatus.OK.code());
-        response.setBody(responseBody);
+        response.setBody(responseBody.getBytes());
         return response;
     }
 

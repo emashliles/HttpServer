@@ -67,8 +67,14 @@ public class HandlerTests {
 
         Response response = handler.handleRequest(coffeeRequest);
 
+        StringBuilder body = new StringBuilder();
+
+        for (int i = 0; i < response.getBody().length; i++) {
+            body.append((char) response.getBody()[i]);
+        }
+
         assertEquals("418 I'm a teapot", response.getStatusCode());
-        assertEquals("I'm a teapot", response.getBody());
+        assertEquals("I'm a teapot", body.toString());
     }
 
     @Test
@@ -83,7 +89,7 @@ public class HandlerTests {
 
     @Test
     public void handlePost() {
-        Request request = new Request("POST /form HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
+        Request request = new Request("POST /form HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n\r\ndata=hello");
         Handler handler = new FormHandler();
 
         Response response = handler.handleRequest(request);
@@ -108,6 +114,12 @@ public class HandlerTests {
 
         Response response = handler.handleRequest(request);
 
-        assertEquals("Eat", response.getBody());
+        StringBuilder body = new StringBuilder();
+
+        for (int i = 0; i < response.getBody().length; i++) {
+            body.append((char) response.getBody()[i]);
+        }
+
+        assertEquals("Eat", body.toString());
     }
 }

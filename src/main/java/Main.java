@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -34,9 +32,7 @@ public class Main {
             router.add(new NotFoundHandler());
             try (ServerSocket serverSocket = new ServerSocket(5000);
                  Socket clientSocket = serverSocket.accept();
-
-                 PrintWriter out =
-                    new PrintWriter(clientSocket.getOutputStream(), true);
+                 OutputStream out = clientSocket.getOutputStream();
                  InputStreamReader inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
                  BufferedReader in = new BufferedReader(
                          inputStreamReader))
@@ -53,7 +49,10 @@ public class Main {
                 ResponseWriter responseWriter = new ResponseWriter();
 
                 Response response = handler.handleRequest(request);
-                out.println(responseWriter.responseString(response));
+                out.write(responseWriter.responseString(response).getBytes());
+                if(response.getBody() != null) {
+                    out.write(response.getBody());
+                }
             }
 
         } catch (Exception e) {

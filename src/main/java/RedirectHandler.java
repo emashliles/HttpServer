@@ -3,7 +3,7 @@ public class RedirectHandler implements Handler {
     public Response handleRequest(Request request) {
         Response response = new Response();
         response.setStatusCode(HttpStatus.Redirect.code());
-        response.setBody("http://localhost:5000/");
+        response.setBody("http://localhost:5000/".getBytes());
         response.setLocation("Location: http://localhost:5000/");
         return response;
     }

@@ -1,10 +1,9 @@
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Response {
     private String statusCode;
-    private String body;
+    private byte[] body;
     private String location;
     private Map<String, String> parameters;
 
@@ -20,11 +19,11 @@ public class Response {
         return statusCode;
     }
 
-    public String getBody() {
+    public byte[] getBody() {
         return body;
     }
 
-    public void setBody(String body) {
+    public void setBody(byte[] body) {
         this.body = body;
     }
 

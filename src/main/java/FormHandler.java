@@ -29,7 +29,10 @@ public class FormHandler extends HandlerBase implements Handler {
         }
 
         response.setStatusCode(HttpStatus.OK.code());
-        response.setBody(data);
+
+        if (!data.equals("")) {
+            response.setBody(data.getBytes());
+        }
 
         return response;
     }
