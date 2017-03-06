@@ -6,7 +6,17 @@ import java.net.Socket;
 
 public class Main {
 
+    private static Router router;
+
     public static void main(String[] args) {
+        router = new Router();
+        router.add(new SimpleHandler());
+        router.add(new CoffeeHandler());
+        router.add(new RedirectHandler());
+        router.add(new File1Handler());
+        router.add(new TextFileHandler());
+        router.add(new FormHandler());
+        router.add(new NotFoundHandler());
         start();
     }
 
@@ -17,25 +27,22 @@ public class Main {
     }
 
     public static void run() {
-        Router router = new Router();
-        router.add(new SimpleHandler());
-        router.add(new CoffeeHandler());
-        router.add(new RedirectHandler());
-        router.add(new File1Handler());
-        router.add(new TextFileHandler());
-        router.add(new FormHandler());
-        router.add(new NotFoundHandler());
         try {
             try (ServerSocket serverSocket = new ServerSocket(5000);
                  Socket clientSocket = serverSocket.accept();
 
                  PrintWriter out =
                     new PrintWriter(clientSocket.getOutputStream(), true);
+                 InputStreamReader inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
                  BufferedReader in = new BufferedReader(
-                    new InputStreamReader(clientSocket.getInputStream())))
+                         inputStreamReader))
             {
-                RequestParser parser = new RequestParser();
-                Request request = new Request(parser.parseRequest(in));
+                RequestParser parser = new RequestParser(in);
+                Request request = new Request(parser.parseHeaders());
+
+                if(request.getConentLength() != 0) {
+                    request.setBody(parser.parseBody(request.getConentLength()));
+                }
 
                 Handler handler = router.find(request.path());
 

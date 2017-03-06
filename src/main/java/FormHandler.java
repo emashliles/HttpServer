@@ -1,7 +1,10 @@
 public class FormHandler extends HandlerBase implements Handler {
 
+    private String data;
+
     public FormHandler() {
         super();
+        data = "";
     }
 
     @Override
@@ -13,7 +16,21 @@ public class FormHandler extends HandlerBase implements Handler {
             return response;
         }
 
+        if(request.httpMethod().equals("POST")) {
+            data = request.body();
+        }
+
+        if(request.httpMethod().equals("PUT")) {
+            data = request.body();
+        }
+
+        if(request.httpMethod().equals("DELETE")) {
+            data = "";
+        }
+
         response.setStatusCode(HttpStatus.OK.code());
+        response.setBody(data);
+
         return response;
     }
 
@@ -26,5 +43,7 @@ public class FormHandler extends HandlerBase implements Handler {
     protected void addAllowedMethods() {
         allowedMethods.add("POST");
         allowedMethods.add("PUT");
+        allowedMethods.add("GET");
+        allowedMethods.add("DELETE");
     }
 }
