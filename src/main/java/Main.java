@@ -22,7 +22,6 @@ public class Main {
             router.add(new SimpleHandler());
             router.add(new CoffeeHandler());
             router.add(new RedirectHandler());
-            router.add(new File1Handler());
             router.add(new TextFileHandler());
             router.add(new FormHandler());
             router.add(new ParametersHandler());

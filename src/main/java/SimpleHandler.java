@@ -2,21 +2,53 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleHandler implements Handler {
+public class SimpleHandler extends HandlerBase implements Handler {
 
     private final List<String> paths;
+    private final PublicDirectory publicDirectory;
 
     public SimpleHandler() {
+        super();
         paths = new ArrayList<>();
+        publicDirectory = new PublicDirectory("public");
+
+        for(int i = 0; i < publicDirectory.getFiles().size(); i++) {
+            paths.add("/" + publicDirectory.getFiles().get(i));
+        }
+
         paths.add("/");
     }
 
     @Override
     public Response handleRequest(Request request) {
         Response response = new Response();
-        response.setStatusCode(HttpStatus.OK.code());
 
-        PublicDirectory publicDirectory = new PublicDirectory("public");
+        if(!allowedMethods.contains(request.httpMethod())) {
+            response.setStatusCode(HttpStatus.MethodNotAllowed.code());
+            return response;
+        }
+
+        response.setStatusCode(HttpStatus.OK.code());
+        String contentType;
+        byte[] body;
+
+        if(request.path().equals("/")) {
+            contentType = "text/html";
+            body = directoryLinks();
+        }
+        else {
+            contentType = publicDirectory.getContentType(request.path());
+            body = publicDirectory.getFileContent(request.path());
+        }
+
+        response.addHeader("Content-Type", contentType);
+        response.setBody(body);
+
+        return response;
+    }
+
+    private byte[] directoryLinks() {
+
         String body = "";
 
         for (String file : publicDirectory.getFiles()) {
@@ -27,11 +59,7 @@ public class SimpleHandler implements Handler {
             body += "</a></br>";
         }
 
-        response.addHeader("Content-Type", "text/html");
-
-        response.setBody(body.getBytes());
-
-        return response;
+        return body.getBytes();
     }
 
     @Override
@@ -42,5 +70,10 @@ public class SimpleHandler implements Handler {
            }
        }
        return false;
+    }
+
+    @Override
+    protected void addAllowedMethods() {
+        allowedMethods.add("GET");
     }
 }
