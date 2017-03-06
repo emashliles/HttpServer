@@ -6,17 +6,8 @@ import java.net.Socket;
 
 public class Main {
 
-    private static Router router;
-
     public static void main(String[] args) {
-        router = new Router();
-        router.add(new SimpleHandler());
-        router.add(new CoffeeHandler());
-        router.add(new RedirectHandler());
-        router.add(new File1Handler());
-        router.add(new TextFileHandler());
-        router.add(new FormHandler());
-        router.add(new NotFoundHandler());
+
         start();
     }
 
@@ -28,6 +19,15 @@ public class Main {
 
     public static void run() {
         try {
+            Router router = new Router();
+            router.add(new SimpleHandler());
+            router.add(new CoffeeHandler());
+            router.add(new RedirectHandler());
+            router.add(new File1Handler());
+            router.add(new TextFileHandler());
+            router.add(new FormHandler());
+            router.add(new ParametersHandler());
+            router.add(new NotFoundHandler());
             try (ServerSocket serverSocket = new ServerSocket(5000);
                  Socket clientSocket = serverSocket.accept();
 

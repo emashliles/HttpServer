@@ -6,10 +6,11 @@ public class Request {
 
     private List<String> headers;
     private final String method;
-    private final String path;
+    private String path;
     private final String httpVersion;
     private String body;
     private int conentLength;
+    private List<String> parameters;
 
     public Request(String rawRequest) {
 
@@ -32,8 +33,22 @@ public class Request {
         String declaration = headers.get(0);
         String[] declarations = declaration.split(" ");
         method = declarations[0];
-        path = declarations[1];
+        extractPathAndParamters(declarations);
         httpVersion = declarations[2];
+    }
+
+    private void extractPathAndParamters(String[] declarations) {
+        String path = declarations[1];
+
+        if(path.contains("?")) {
+            String[] pathAndparams = path.split("\\?");
+            this.path = pathAndparams[0];
+            parameters = Arrays.asList(pathAndparams[1].split("&"));
+        }
+        else {
+            this.path = path;
+        }
+
     }
 
     public int length() {
@@ -66,5 +81,9 @@ public class Request {
 
     public void setConentLength(int conentLength) {
         this.conentLength = conentLength;
+    }
+
+    public List<String> parameters() {
+        return this.parameters;
     }
 }
