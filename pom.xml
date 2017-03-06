@@ -21,6 +21,11 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>resources/public</directory>
+            </resource>
+        </resources>
     </build>
     <dependencies>
         <dependency>
