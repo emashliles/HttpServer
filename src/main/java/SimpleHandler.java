@@ -75,5 +75,6 @@ public class SimpleHandler extends HandlerBase implements Handler {
     @Override
     protected void addAllowedMethods() {
         allowedMethods.add("GET");
+        allowedMethods.add("HEAD");
     }
 }

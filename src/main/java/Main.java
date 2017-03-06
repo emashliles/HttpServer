@@ -49,9 +49,11 @@ public class Main {
 
                 Response response = handler.handleRequest(request);
                 out.write(responseWriter.responseString(response).getBytes());
-                if(response.getBody() != null) {
+
+                if (response.getBody() != null || !request.httpMethod().equals("HEAD")) {
                     out.write(response.getBody());
                 }
+
             }
 
         } catch (Exception e) {

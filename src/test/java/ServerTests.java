@@ -145,4 +145,23 @@ public class ServerTests {
 
         }
     }
+
+    @Test
+    public void onlyReturnHeadersForHEADRequest() throws IOException {
+        Thread server = new Thread(() -> {
+            Main.start();
+        });
+
+        server.start();
+
+        URL url = new URL("http://localhost:5000/file1");
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setRequestMethod("HEAD");
+
+        assertEquals(false, connection.getHeaderFields().isEmpty());
+        assertEquals(-1, connection.getInputStream().read());
+
+    }
 }
