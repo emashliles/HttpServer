@@ -28,7 +28,7 @@ public class SimpleHandler extends HandlerBase implements Handler {
             return response;
         }
 
-        response.setStatusCode(HttpStatus.OK.code());
+
         String contentType;
         byte[] body;
 
@@ -38,13 +38,32 @@ public class SimpleHandler extends HandlerBase implements Handler {
         }
         else {
             contentType = publicDirectory.getContentType(request.path());
-            body = publicDirectory.getFileContent(request.path());
+            body = getBody(request);
+        }
+
+        if(request.hasRange()) {
+            response.setStatusCode(HttpStatus.PartialContent.code());
+        }
+        else {
+            response.setStatusCode(HttpStatus.OK.code());
         }
 
         response.addHeader("Content-Type", contentType);
         response.setBody(body);
 
         return response;
+    }
+
+    private byte[] getBody(Request request) {
+        byte[] body;
+
+        if(request.hasRange()) {
+            body = publicDirectory.getPartialFileContent(request.path(), request.rangeStart(), request.rangeEnd());
+        }
+        else {
+            body = publicDirectory.getFileContent(request.path());
+        }
+        return body;
     }
 
     private byte[] directoryLinks() {

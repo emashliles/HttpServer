@@ -68,6 +68,37 @@ public class ServerTests {
     }
 
     @Test
+    public void canReturnPartialFile() throws IOException {
+        Thread server = new Thread(() -> {
+            Main.start();
+        });
+
+        server.start();
+
+        URL url = new URL("http://localhost:5000/partial_content.txt");
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setRequestProperty("Range", "bytes=0-7");
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(
+                        connection.getInputStream()));
+        Map<String, List<String>> headerFields = connection.getHeaderFields();
+
+        String line = "";
+        String body = "";
+        while ((line = in.readLine()) != null) {
+            body += line;
+        }
+
+        in.close();
+
+        assertEquals("HTTP/1.1 206 Partial Content", headerFields.get(null).get(0));
+        assertEquals("This is", body.toString());
+        assertEquals("text/plain", connection.getContentType());
+    }
+    @Test
     public void canReturnFileContents() throws IOException {
         Thread server = new Thread(() -> {
             Main.start();

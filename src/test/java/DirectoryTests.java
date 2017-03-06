@@ -44,6 +44,22 @@ public class DirectoryTests {
     }
 
     @Test
+    public void getPartialContent() {
+        PublicDirectory publicDirectory = new PublicDirectory("public");
+
+        byte[] partialFile = publicDirectory.getPartialFileContent("partial_content.txt", 0, 4);
+
+        StringBuilder body = new StringBuilder();
+
+        for(int i = 0; i < partialFile.length; i++) {
+            body.append((char) partialFile[i]);
+        }
+
+        assertEquals("This", body.toString());
+
+    }
+
+    @Test
     public void defaultContentType() {
         PublicDirectory publicDirectory = new PublicDirectory("public");
 

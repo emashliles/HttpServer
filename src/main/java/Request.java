@@ -11,6 +11,9 @@ public class Request {
     private String body;
     private int conentLength;
     private List<String> parameters;
+    private boolean hasRange;
+    private int rangeStart;
+    private int rangeEnd;
 
     public Request(String rawRequest) {
 
@@ -27,6 +30,13 @@ public class Request {
             if(header.contains("Content-Length")) {
                 String rawLength = header.split(":")[1];
                 conentLength = Integer.parseInt(rawLength.split(" ")[1]);
+            }
+
+            if(header.contains("Range: bytes=")) {
+                hasRange = true;
+                String[] rawRanges = header.split(":")[1].split("=")[1].split("-");
+                rangeStart = Integer.parseInt(rawRanges[0]);
+                rangeEnd = Integer.parseInt(rawRanges[1]);
             }
         }
 
@@ -85,5 +95,17 @@ public class Request {
 
     public List<String> parameters() {
         return this.parameters;
+    }
+
+    public boolean hasRange() {
+        return this.hasRange;
+    }
+
+    public int rangeStart() {
+        return this.rangeStart;
+    }
+
+    public int rangeEnd() {
+        return this.rangeEnd;
     }
 }
