@@ -26,28 +26,7 @@ public class RequestParser {
         }
 
         request = rawRequest.toString();
-
         return request;
-    }
-
-    private String getBody(BufferedReader in) {
-        String rawBody;
-        StringBuilder body = new StringBuilder();
-
-        try {
-            while ((rawBody = in.readLine()) != null) {
-                if(rawBody.equals("")) {
-                    break;
-                }
-                body.append(rawBody);
-            }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return body.toString();
     }
 
     public String parseBody(int conentLength) {

@@ -110,7 +110,7 @@ public class HandlerTests {
     @Test
     public void handlesUnauthenticatedRequest() {
         Request request = new Request("GET /logs HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
-        Handler handler = new LogsHandler();
+        Handler handler = new SimpleHandler();
 
         Response response = handler.handleRequest(request);
 
@@ -119,9 +119,19 @@ public class HandlerTests {
     }
 
     @Test
+    public void handlesLogging() {
+        Request request = new Request("GET /log HTTP/1.1\r\nHost: localhost:5000\r\nAuthorization: Basic YWRtaW46aHVudGVyMg==\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
+        Handler handler = new LoggingHandler();
+
+        Response response = handler.handleRequest(request);
+
+        assertEquals("200 OK", response.getStatusCode());
+    }
+
+    @Test
     public void handlesAuthenticatedRequest() {
         Request request = new Request("GET /logs HTTP/1.1\r\nAuthorization: Basic YWRtaW46aHVudGVyMg==\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
-        Handler handler = new LogsHandler();
+        Handler handler = new SimpleHandler();
 
         Response response = handler.handleRequest(request);
 

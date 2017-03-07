@@ -71,11 +71,8 @@ public class PublicDirectory {
     }
 
     public byte[] getPartialFileContent(String fileName, int rangeStart, int rangeEnd) {
-
         URL resource = getClass().getResource(directoryName + "/" + fileName);
-
         File file = new File(resource.getPath());
-
         byte[] fileBytes = new byte[rangeEnd - rangeStart];
 
 

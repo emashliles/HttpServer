@@ -23,6 +23,19 @@ public class SimpleHandler extends HandlerBase implements Handler {
     public Response handleRequest(Request request) {
         Response response = new Response();
 
+        if(request.path().equals("/logs")) {
+            if (request.authorization() != null && request.authorization().equals("YWRtaW46aHVudGVyMg==")) {
+                response.setStatusCode(HttpStatus.OK.code());
+                response.setBody(publicDirectory.getFileContent("logs"));
+                return response;
+            } else {
+                response.setStatusCode(HttpStatus.Unauthorized.code());
+                response.addHeader("WWW-Authenticate", "Basic realm=\"logs\"");
+                return response;
+            }
+        }
+
+
         if(!allowedMethods.contains(request.httpMethod())) {
             response.setStatusCode(HttpStatus.MethodNotAllowed.code());
             return response;
