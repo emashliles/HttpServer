@@ -108,6 +108,18 @@ public class HandlerTests {
     }
 
     @Test
+    public void handlesUnauthenticatedRequest() {
+        Request request = new Request("GET /logs HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
+        Handler handler = new LogsHandler();
+
+        Response response = handler.handleRequest(request);
+
+        assertEquals("401 Unauthorized", response.getStatusCode());
+        assertEquals("Basic realm=\"logs\"", response.getParameters().get("WWW-Authenticate"));
+
+    }
+
+    @Test
     public void handleCookies() {
         Request request = new Request("GET /cookie?type=chocolate HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
         Handler handler = new CookieHandler();

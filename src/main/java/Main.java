@@ -28,6 +28,7 @@ public class Main {
             router.add(new MethodOptionsHandler());
             router.add(new MethodOptions2Handler());
             router.add(new CookieHandler());
+            router.add(new LogsHandler());
             router.add(new NotFoundHandler());
             try (ServerSocket serverSocket = new ServerSocket(5000);
                  Socket clientSocket = serverSocket.accept();

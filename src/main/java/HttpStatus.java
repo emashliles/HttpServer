@@ -4,6 +4,7 @@ public enum HttpStatus {
     Redirect ("302 Redirect"),
     NotFound ("404 Not Found"),
     ImATeapot ("418 I'm a teapot"),
+    Unauthorized("401 Unauthorized"),
     MethodNotAllowed("405 Method Not Allowed");
 
     private String status;
