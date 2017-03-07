@@ -1,9 +1,6 @@
 import java.io.*;
 import java.net.FileNameMap;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -75,13 +72,13 @@ public class PublicDirectory {
     public byte[] getPartialFileContent(String fileName, int rangeStart, int rangeEnd) {
         URL resource = getClass().getResource(directoryName + "/" + fileName);
         File file = new File(resource.getPath());
-        byte[] fileBytes = new byte[rangeEnd - rangeStart];
+        byte[] fileBytes = new byte[(rangeEnd + 1) - rangeStart];
 
 
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
             randomAccessFile.seek(rangeStart);
-            randomAccessFile.read(fileBytes, 0, rangeEnd - rangeStart);
+            randomAccessFile.read(fileBytes, 0, (rangeEnd + 1) - rangeStart);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

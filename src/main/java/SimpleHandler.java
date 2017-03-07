@@ -92,7 +92,7 @@ public class SimpleHandler extends HandlerBase implements Handler {
 
         for (String file : publicDirectory.getFiles()) {
             body += "<a href=\"";
-            body += ("http://localhost:5000/" + file + "\"");
+            body += ("/" + file + "\"");
             body += ">";
             body += file;
             body += "</a></br>";

@@ -38,6 +38,7 @@ public class Request {
             if(header.contains("Range: bytes=")) {
                 hasRange = true;
                 String[] rawRanges = header.split(":")[1].split("=")[1].split("-");
+
                 rangeStart = Integer.parseInt(rawRanges[0]);
                 rangeEnd = Integer.parseInt(rawRanges[1]);
             }

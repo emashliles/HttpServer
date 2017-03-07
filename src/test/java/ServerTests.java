@@ -63,7 +63,7 @@ public class ServerTests {
         in.close();
 
         assertEquals("HTTP/1.1 200 OK", headerFields.get(null).get(0));
-        assertTrue(body.contains("<a href=\"http://localhost:5000/file1\">file1</a>"));
+        assertTrue(body.contains("<a href=\"/file1\">file1</a>"));
         assertEquals("text/html", connection.getContentType());
     }
 
