@@ -16,6 +16,7 @@ public class Request {
     private int rangeEnd;
     private String cookieData;
     private String authorization;
+    private String ifMatch;
 
     public Request(String rawRequest) {
 
@@ -47,6 +48,10 @@ public class Request {
 
             if(header.contains("Authorization")) {
                 this.authorization = header.split(":")[1].split(" ")[2];
+            }
+
+            if(header.contains("If-Match")){
+                this.ifMatch = header.split(":")[1].split(" ")[1];
             }
         }
 
@@ -121,5 +126,9 @@ public class Request {
 
     public String authorization() {
         return this.authorization;
+    }
+
+    public String ifMatch() {
+        return this.ifMatch;
     }
 }

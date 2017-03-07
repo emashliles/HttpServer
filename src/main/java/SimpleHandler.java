@@ -23,6 +23,13 @@ public class SimpleHandler extends HandlerBase implements Handler {
     public Response handleRequest(Request request) {
         Response response = new Response();
 
+        if(request.httpMethod().equals("PATCH") && request.ifMatch().equals(publicDirectory.getHash("patch-content.txt"))) {
+            response.setStatusCode(HttpStatus.NoContent.code());
+            publicDirectory.setFileContents("patch-content.txt", request.body());
+            return response;
+        }
+
+
         if(request.path().equals("/logs")) {
             if (request.authorization() != null && request.authorization().equals("YWRtaW46aHVudGVyMg==")) {
                 response.setStatusCode(HttpStatus.OK.code());
@@ -110,5 +117,6 @@ public class SimpleHandler extends HandlerBase implements Handler {
     protected void addAllowedMethods() {
         allowedMethods.add("GET");
         allowedMethods.add("HEAD");
+        allowedMethods.add("PATCH");
     }
 }

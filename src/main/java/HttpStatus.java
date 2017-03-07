@@ -1,5 +1,6 @@
 public enum HttpStatus {
     OK ("200 OK"),
+    NoContent("204 No Content"),
     PartialContent("206 Partial Content"),
     Redirect ("302 Redirect"),
     NotFound ("404 Not Found"),

@@ -1,7 +1,13 @@
 import java.io.*;
 import java.net.FileNameMap;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 public class PublicDirectory {
@@ -84,6 +90,54 @@ public class PublicDirectory {
 
         return fileBytes;
 
+
+    }
+
+    public String getHash(String fileName) {
+        URL resource = getClass().getResource(directoryName + "/" + fileName);
+        File file = new File(resource.getPath());
+        String hash = "";
+
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA1");
+
+            try (InputStream is = new BufferedInputStream(new FileInputStream(file))) {
+                final byte[] buffer = new byte[1024];
+                for (int read = 0; (read = is.read(buffer)) != -1;) {
+                    messageDigest.update(buffer, 0, read);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try (Formatter formatter = new Formatter()) {
+                for (final byte b : messageDigest.digest()) {
+                    formatter.format("%02x", b);
+                }
+                hash = formatter.toString();
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return hash;
+
+    }
+
+    public void setFileContents(String fileName, String newContent) {
+        URL resource = getClass().getResource(directoryName + "/" + fileName);
+        File file = new File(resource.getPath());
+
+        try {
+            FileOutputStream outputStream = new FileOutputStream(file, false);
+            byte[] myBytes = newContent.getBytes();
+            outputStream.write(myBytes);
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }

@@ -153,4 +153,28 @@ public class HandlerTests {
 
         assertEquals("Eat", body.toString());
     }
+
+    @Test
+    public void handlePatchUpdates() {
+        Request changeRequest = new Request("PATCH /patch-content.txt HTTP/1.1\r\nIf-Match: dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n\r\npatched content");
+        Request revertRequest = new Request("PATCH /patch-content.txt HTTP/1.1\r\nIf-Match: 5c36acad75b78b82be6d9cbbd6143ab7e0cc04b0\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n\r\ndefault content");
+        Request request = new Request("GET /patch-content.txt HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
+        Handler handler = new SimpleHandler();
+
+        Response changeResponse = handler.handleRequest(changeRequest);
+        Response revertResponse = handler.handleRequest(revertRequest);
+        Response response = handler.handleRequest(request);
+
+        assertEquals("204 No Content", changeResponse.getStatusCode());
+        assertEquals("204 No Content", revertResponse.getStatusCode());
+        assertEquals("200 OK", response.getStatusCode());
+
+        StringBuilder body = new StringBuilder();
+
+        for (int i = 0; i < response.getBody().length; i++) {
+            body.append((char) response.getBody()[i]);
+        }
+
+        assertEquals("default content", body.toString());
+    }
 }

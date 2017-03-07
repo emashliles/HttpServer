@@ -26,6 +26,7 @@ public class RequestParser {
         }
 
         request = rawRequest.toString();
+        System.out.print(request);
         return request;
     }
 

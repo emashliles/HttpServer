@@ -65,4 +65,21 @@ public class DirectoryTests {
 
         assertEquals("text/plain", publicDirectory.getContentType("file1"));
     }
+
+    @Test
+    public void getFileSHA1() {
+        PublicDirectory publicDirectory = new PublicDirectory("public");
+
+        assertEquals("dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec", publicDirectory.getHash("patch-content.txt"));
+    }
+
+    @Test
+    public void setFileContents() {
+        PublicDirectory publicDirectory = new PublicDirectory("public");
+        publicDirectory.setFileContents("patch-content.txt", "patched content");
+        assertEquals("5c36acad75b78b82be6d9cbbd6143ab7e0cc04b0", publicDirectory.getHash("patch-content.txt"));
+
+        publicDirectory.setFileContents("patch-content.txt", "default content");
+        assertEquals("dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec", publicDirectory.getHash("patch-content.txt"));
+    }
 }
