@@ -10,9 +10,7 @@ public class ParametersHandler extends HandlerBase implements Handler {
     public Response handleRequest(Request request) {
         Response response = new Response();
 
-        if(!allowedMethods.contains(request.httpMethod())) {
-            response.setStatusCode(HttpStatus.MethodNotAllowed.code());
-        }
+        if (checkMethodAllowed(request, response)) return response;
 
         String responseBody = "";
 

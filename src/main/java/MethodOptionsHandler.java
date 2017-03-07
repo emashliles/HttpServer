@@ -8,13 +8,9 @@ public class MethodOptionsHandler extends HandlerBase implements Handler {
     public Response handleRequest(Request request) {
         Response response = new Response();
 
-        if(!allowedMethods.contains(request.httpMethod())) {
-            response.setStatusCode(HttpStatus.MethodNotAllowed.code());
-            return response;
-        }
+        if (checkMethodAllowed(request, response)) return response;
 
         response.setStatusCode(HttpStatus.OK.code());
-
         addOptionsHeader(request, response);
 
         return response;

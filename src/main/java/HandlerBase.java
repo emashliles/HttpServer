@@ -23,6 +23,14 @@ public abstract class HandlerBase {
         }
     }
 
+    protected boolean checkMethodAllowed(Request request, Response response) {
+        if(!allowedMethods.contains(request.httpMethod())) {
+            response.setStatusCode(HttpStatus.MethodNotAllowed.code());
+            return true;
+        }
+        return false;
+    }
+
     protected abstract void addAllowedMethods();
 
     protected boolean allowMethod(String method) {

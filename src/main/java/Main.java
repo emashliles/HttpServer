@@ -11,6 +11,18 @@ public class Main {
     }
 
     public static void start() {
+        router = new Router();
+        router.add(new CoffeeHandler());
+        router.add(new RedirectHandler());
+        router.add(new FormHandler());
+        router.add(new ParametersHandler());
+        router.add(new MethodOptionsHandler());
+        router.add(new MethodOptions2Handler());
+        router.add(new CookieHandler());
+        router.add(new LoggingHandler());
+        router.add(new SimpleHandler());
+        router.add(new NotFoundHandler());
+
         while (true) {
             run();
         }
@@ -18,18 +30,6 @@ public class Main {
 
     public static void run() {
         try {
-            Router router = new Router();
-            router.add(new CoffeeHandler());
-            router.add(new RedirectHandler());
-            router.add(new FormHandler());
-            router.add(new ParametersHandler());
-            router.add(new MethodOptionsHandler());
-            router.add(new MethodOptions2Handler());
-            router.add(new CookieHandler());
-            router.add(new LoggingHandler());
-            router.add(new SimpleHandler());
-            router.add(new NotFoundHandler());
-
             try (ServerSocket serverSocket = new ServerSocket(5000);
                  Socket clientSocket = serverSocket.accept();
                  OutputStream out = clientSocket.getOutputStream();
