@@ -39,8 +39,14 @@ public class Request {
                 hasRange = true;
                 String[] rawRanges = header.split(":")[1].split("=")[1].split("-");
 
-                rangeStart = Integer.parseInt(rawRanges[0]);
-                rangeEnd = Integer.parseInt(rawRanges[1]);
+                if(rawRanges.length == 2) {
+                    rangeStart = Integer.parseInt(rawRanges[0]);
+                    rangeEnd = Integer.parseInt(rawRanges[1]);
+                }
+                else {
+                    rangeStart = Integer.parseInt(rawRanges[0]);
+                    rangeEnd = -1;
+                }
             }
 
             if(header.contains("Cookie")) {

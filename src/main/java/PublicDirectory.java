@@ -72,10 +72,14 @@ public class PublicDirectory {
     public byte[] getPartialFileContent(String fileName, int rangeStart, int rangeEnd) {
         URL resource = getClass().getResource(directoryName + "/" + fileName);
         File file = new File(resource.getPath());
-        byte[] fileBytes = new byte[(rangeEnd + 1) - rangeStart];
-
+        byte[] fileBytes = new byte[0];
 
         try {
+            if(rangeEnd == -1) {
+                rangeEnd = ((int) file.length() - 1);
+            }
+
+            fileBytes = new byte[(rangeEnd + 1) - rangeStart];
             RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
             randomAccessFile.seek(rangeStart);
             randomAccessFile.read(fileBytes, 0, (rangeEnd + 1) - rangeStart);
