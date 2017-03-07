@@ -29,6 +29,7 @@ public class Main {
             router.add(new LoggingHandler());
             router.add(new SimpleHandler());
             router.add(new NotFoundHandler());
+
             try (ServerSocket serverSocket = new ServerSocket(5000);
                  Socket clientSocket = serverSocket.accept();
                  OutputStream out = clientSocket.getOutputStream();

@@ -75,8 +75,22 @@ public class DirectoryTests {
             body.append((char) partialFile[i]);
         }
 
-        assertEquals(" is a file that contains text to read part of in order to fulfill a 206.\n\u0000", body.toString());
+        assertEquals(" is a file that contains text to read part of in order to fulfill a 206.\n", body.toString());
+    }
 
+    @Test
+    public void getFromEndOfFileIfNoRangeStart() {
+        PublicDirectory publicDirectory = new PublicDirectory("public");
+
+        byte[] partialFile = publicDirectory.getPartialFileContent("partial_content.txt", -1, 6);
+
+        StringBuilder body = new StringBuilder();
+
+        for(int i = 0; i < partialFile.length; i++) {
+            body.append((char) partialFile[i]);
+        }
+
+        assertEquals(" 206.\n", body.toString());
     }
 
     @Test

@@ -39,13 +39,17 @@ public class Request {
                 hasRange = true;
                 String[] rawRanges = header.split(":")[1].split("=")[1].split("-");
 
-                if(rawRanges.length == 2) {
+                if(rawRanges.length == 2 && !rawRanges[0].equals("")) {
                     rangeStart = Integer.parseInt(rawRanges[0]);
                     rangeEnd = Integer.parseInt(rawRanges[1]);
                 }
-                else {
+                else if(rawRanges.length == 1) {
                     rangeStart = Integer.parseInt(rawRanges[0]);
                     rangeEnd = -1;
+                }
+                else {
+                    rangeStart = -1;
+                    rangeEnd = Integer.parseInt(rawRanges[1]);
                 }
             }
 

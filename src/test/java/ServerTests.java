@@ -95,7 +95,7 @@ public class ServerTests {
         in.close();
 
         assertEquals("HTTP/1.1 206 Partial Content", headerFields.get(null).get(0));
-        assertEquals("This is", body.toString());
+        assertEquals("This is ", body.toString());
         assertEquals("text/plain", connection.getContentType());
     }
     @Test

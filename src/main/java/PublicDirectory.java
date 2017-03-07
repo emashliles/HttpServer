@@ -78,11 +78,24 @@ public class PublicDirectory {
             if(rangeEnd == -1) {
                 rangeEnd = ((int) file.length() - 1);
             }
+            if(rangeStart == -1) {
+                rangeStart = ((int) file.length()) - rangeEnd;
+            }
 
-            fileBytes = new byte[(rangeEnd + 1) - rangeStart];
+            int rangeSize;
+
+            if(rangeEnd > rangeStart) {
+                rangeSize = (rangeEnd + 1) - rangeStart;
+            }
+            else {
+                rangeEnd += rangeStart;
+                rangeSize = rangeEnd - rangeStart;
+            }
+
+            fileBytes = new byte[rangeSize];
             RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
             randomAccessFile.seek(rangeStart);
-            randomAccessFile.read(fileBytes, 0, (rangeEnd + 1) - rangeStart);
+            randomAccessFile.read(fileBytes, 0, rangeSize);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
