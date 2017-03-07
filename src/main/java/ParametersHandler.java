@@ -8,7 +8,6 @@ public class ParametersHandler extends HandlerBase implements Handler {
 
     @Override
     public Response handleRequest(Request request) {
-
         Response response = new Response();
 
         if(!allowedMethods.contains(request.httpMethod())) {

@@ -2,9 +2,7 @@ public class LoggingHandler extends HandlerBase implements Handler {
     @Override
     public Response handleRequest(Request request) {
         Response response = new Response();
-
         response.setStatusCode(HttpStatus.OK.code());
-
         return response;
     }
 

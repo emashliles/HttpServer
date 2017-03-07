@@ -21,7 +21,6 @@ public class Main {
             Router router = new Router();
             router.add(new CoffeeHandler());
             router.add(new RedirectHandler());
-            router.add(new TextFileHandler());
             router.add(new FormHandler());
             router.add(new ParametersHandler());
             router.add(new MethodOptionsHandler());
