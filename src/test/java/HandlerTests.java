@@ -116,7 +116,16 @@ public class HandlerTests {
 
         assertEquals("401 Unauthorized", response.getStatusCode());
         assertEquals("Basic realm=\"logs\"", response.getParameters().get("WWW-Authenticate"));
+    }
 
+    @Test
+    public void handlesAuthenticatedRequest() {
+        Request request = new Request("GET /logs HTTP/1.1\r\nAuthorization: Basic YWRtaW46aHVudGVyMg==\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
+        Handler handler = new LogsHandler();
+
+        Response response = handler.handleRequest(request);
+
+        assertEquals("200 OK", response.getStatusCode());
     }
 
     @Test

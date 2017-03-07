@@ -10,12 +10,12 @@ public class RequestTests {
 
     @Before
     public void setUp() {
-        request = new Request("GET / HTTP/1.1\r\nHost: localhost:5000\r\nCookie: data\r\nRange: bytes=0-4\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n\r\ndata=myData\r\n");
+        request = new Request("GET / HTTP/1.1\r\nHost: localhost:5000\r\nAuthorization: Basic YWRtaW46aHVudGVyMg==\r\nCookie: data\r\nRange: bytes=0-4\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n\r\ndata=myData\r\n");
     }
 
     @Test
     public void canSeparateHeaders() {
-        assertEquals(7, request.length());
+        assertEquals(8, request.length());
     }
 
     @Test
@@ -54,5 +54,11 @@ public class RequestTests {
     @Test
     public void separateCookieHeader() {
         assertEquals(" data", request.cookieData());
+    }
+
+    @Test
+    public void separateAuthHeader() {
+        assertEquals("YWRtaW46aHVudGVyMg==", request.authorization());
+
     }
 }

@@ -15,6 +15,7 @@ public class Request {
     private int rangeStart;
     private int rangeEnd;
     private String cookieData;
+    private String authorization;
 
     public Request(String rawRequest) {
 
@@ -42,6 +43,10 @@ public class Request {
 
             if(header.contains("Cookie")) {
                 this.cookieData = header.split(":")[1];
+            }
+
+            if(header.contains("Authorization")) {
+                this.authorization = header.split(":")[1].split(" ")[1];
             }
         }
 
@@ -94,10 +99,6 @@ public class Request {
         return conentLength;
     }
 
-    public void setConentLength(int conentLength) {
-        this.conentLength = conentLength;
-    }
-
     public List<String> parameters() {
         return this.parameters;
     }
@@ -116,5 +117,9 @@ public class Request {
 
     public String cookieData() {
         return this.cookieData;
+    }
+
+    public String authorization() {
+        return this.authorization;
     }
 }

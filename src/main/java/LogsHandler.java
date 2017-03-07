@@ -7,8 +7,13 @@ public class LogsHandler extends HandlerBase implements Handler {
     public Response handleRequest(Request request) {
         Response response = new Response();
 
-        response.setStatusCode(HttpStatus.Unauthorized.code());
-        response.addHeader("WWW-Authenticate", "Basic realm=\"logs\"");
+        if(request.authorization() != null && request.authorization() == "YWRtaW46aHVudGVyMg==") {
+            response.setStatusCode(HttpStatus.OK.code());
+        }
+        else {
+            response.setStatusCode(HttpStatus.Unauthorized.code());
+            response.addHeader("WWW-Authenticate", "Basic realm=\"logs\"");
+        }
         return response;
     }
 
