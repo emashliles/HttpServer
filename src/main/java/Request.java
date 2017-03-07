@@ -46,7 +46,7 @@ public class Request {
             }
 
             if(header.contains("Authorization")) {
-                this.authorization = header.split(":")[1].split(" ")[1];
+                this.authorization = header.split(":")[1].split(" ")[2];
             }
         }
 

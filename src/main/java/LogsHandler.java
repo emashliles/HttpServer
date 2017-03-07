@@ -7,7 +7,7 @@ public class LogsHandler extends HandlerBase implements Handler {
     public Response handleRequest(Request request) {
         Response response = new Response();
 
-        if(request.authorization() != null && request.authorization() == "YWRtaW46aHVudGVyMg==") {
+        if(request.authorization() != null && request.authorization().equals("YWRtaW46aHVudGVyMg==")) {
             response.setStatusCode(HttpStatus.OK.code());
         }
         else {
