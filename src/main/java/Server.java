@@ -1,20 +1,21 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
     private Router router;
+    private Socket clientSocket;
 
-    public Server(Router router) {
+    public Server(Router router, Socket clientSocket) {
         this.router = router;
+        this.clientSocket = clientSocket;
     }
 
-    public void invoke() {
+    public void run() {
         try {
-            try (ServerSocket serverSocket = new ServerSocket(5000);
-                 Socket clientSocket = serverSocket.accept();
+            try (
+
                  OutputStream out = clientSocket.getOutputStream();
                  InputStreamReader inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
                  BufferedReader in = new BufferedReader(

@@ -1,3 +1,7 @@
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 public class Main {
 
     private static Router router;
@@ -24,7 +28,14 @@ public class Main {
     }
 
     public static void run(Router router) {
-        new Server(router).invoke();
+        try {
+            ServerSocket serverSocket = new ServerSocket(5000);
+            Socket clientSocket = serverSocket.accept();
+            new Server(router, clientSocket).run();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
