@@ -1,4 +1,9 @@
-public class RedirectHandler implements Handler {
+public class RedirectHandler extends Handler {
+    @Override
+    protected void addAllowedMethods() {
+        allowedMethods.add("GET");
+    }
+
     @Override
     public Response handleRequest(Request request) {
         Response response = new Response();

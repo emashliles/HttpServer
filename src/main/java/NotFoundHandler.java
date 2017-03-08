@@ -1,4 +1,9 @@
-public class NotFoundHandler implements Handler {
+public class NotFoundHandler extends Handler {
+    @Override
+    protected void addAllowedMethods() {
+        allowedMethods.add("GET");
+    }
+
     @Override
     public Response handleRequest(Request request) {
         Response response = new Response();

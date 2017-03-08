@@ -1,4 +1,4 @@
-public class LoggingHandler extends HandlerBase implements Handler {
+public class LoggingHandler extends Handler {
     @Override
     public Response handleRequest(Request request) {
         Response response = new Response();

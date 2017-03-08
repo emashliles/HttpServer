@@ -1,4 +1,4 @@
-public class FormHandler extends HandlerBase implements Handler {
+public class FormHandler extends Handler {
 
     private String data;
 

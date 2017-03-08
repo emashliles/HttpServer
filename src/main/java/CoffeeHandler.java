@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class CoffeeHandler extends HandlerBase implements Handler {
+public class CoffeeHandler extends Handler {
 
     private List<String> paths;
 

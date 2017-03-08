@@ -1,4 +1,4 @@
-public class CookieHandler extends HandlerBase implements Handler {
+public class CookieHandler extends Handler {
     public CookieHandler() {
         super();
     }

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleHandler extends HandlerBase implements Handler {
+public class SimpleHandler extends Handler {
 
     private final List<String> paths;
     private final Directory publicDirectory;

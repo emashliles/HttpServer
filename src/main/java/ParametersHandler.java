@@ -1,6 +1,6 @@
 import java.net.URLDecoder;
 
-public class ParametersHandler extends HandlerBase implements Handler {
+public class ParametersHandler extends Handler {
 
     public ParametersHandler() {
         super();

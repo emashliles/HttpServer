@@ -1,4 +1,4 @@
-public class MethodOptionsHandler extends HandlerBase implements Handler {
+public class MethodOptionsHandler extends Handler {
 
     public MethodOptionsHandler() {
         super();
