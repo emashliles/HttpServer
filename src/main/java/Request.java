@@ -18,7 +18,7 @@ public class Request {
     private String authorization;
     private String ifMatch;
 
-    public Request(String rawRequest) {
+    private Request(String rawRequest) {
         String[] request = rawRequest.split("\r\n\r\n");
         String head = request[0];
 
@@ -70,6 +70,10 @@ public class Request {
         method = declarations[0];
         extractPathAndParamters(declarations);
         httpVersion = declarations[2];
+    }
+
+    public static Request createRequest(String rawRequest) {
+        return new Request(rawRequest);
     }
 
     private void extractPathAndParamters(String[] declarations) {

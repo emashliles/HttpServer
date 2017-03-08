@@ -24,22 +24,20 @@ public class Main {
         router.add(new LoggingHandler());
         router.add(new SimpleHandler());
         router.add(new NotFoundHandler());
-        executorService = Executors.newFixedThreadPool(10);
+        executorService = Executors.newFixedThreadPool(100);
         run(router);
     }
 
     public static void run(Router router) {
-            try {
-                try(ServerSocket serverSocket = new ServerSocket(5000)) {
-                    while(true) {
-                        Socket clientSocket = serverSocket.accept();
-                        executorService.execute(new Server(router, clientSocket));
-                    }
+        try {
+            try (ServerSocket serverSocket = new ServerSocket(5000)) {
+                while (true) {
+                    Socket clientSocket = serverSocket.accept();
+                    executorService.execute(new Server(router, clientSocket));
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
-
 }

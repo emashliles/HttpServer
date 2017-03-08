@@ -11,7 +11,7 @@ public class RequestParser {
     public String parseHeaders() {
         StringBuilder rawRequest = new StringBuilder();
         String request;
-        String head = "";
+        String head;
 
         try {
             while ((head = this.in.readLine()) != null) {

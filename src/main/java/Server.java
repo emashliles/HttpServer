@@ -21,7 +21,7 @@ public class Server implements Runnable{
                          inputStreamReader))
             {
                 RequestParser parser = new RequestParser(in);
-                Request request = new Request(parser.parseHeaders());
+                Request request = Request.createRequest(parser.parseHeaders());
 
                 if(request.getContentLength() != 0) {
                     request.setBody(parser.parseBody(request.getContentLength()));
