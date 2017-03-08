@@ -104,7 +104,7 @@ public class HandlerTests {
 
         Response response = handler.handleRequest(request);
 
-        assertEquals("GET,HEAD,POST,OPTIONS,PUT", response.getParameters().get("Allow"));
+        assertEquals("GET,HEAD,POST,OPTIONS,PUT", response.getHeaders().get("Allow"));
     }
 
     @Test
@@ -115,7 +115,7 @@ public class HandlerTests {
         Response response = handler.handleRequest(request);
 
         assertEquals("401 Unauthorized", response.getStatusCode());
-        assertEquals("Basic realm=\"logs\"", response.getParameters().get("WWW-Authenticate"));
+        assertEquals("Basic realm=\"logs\"", response.getHeaders().get("WWW-Authenticate"));
     }
 
     @Test

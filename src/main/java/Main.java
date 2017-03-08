@@ -23,7 +23,6 @@ public class Main {
         router.add(new CookieHandler());
         router.add(new LoggingHandler());
         router.add(new SimpleHandler());
-        router.add(new NotFoundHandler());
         executorService = Executors.newFixedThreadPool(100);
         run(router);
     }

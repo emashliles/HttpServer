@@ -5,10 +5,10 @@ public class Response {
     private String statusCode;
     private byte[] body;
     private String location;
-    private Map<String, String> parameters;
+    private Map<String, String> headers;
 
     public Response() {
-        parameters = new HashMap<>();
+        headers = new HashMap<>();
     }
 
     public void setStatusCode(String statusCode) {
@@ -36,10 +36,10 @@ public class Response {
     }
 
     public void addHeader(String key, String value) {
-        parameters.put(key, value);
+        headers.put(key, value);
     }
 
-    public Map<String, String> getParameters() {
-        return parameters;
+    public Map<String, String> getHeaders() {
+        return headers;
     }
 }

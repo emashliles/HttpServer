@@ -3,9 +3,11 @@ import java.util.List;
 
 public class Router {
     private final List<Handler> handlers;
+    private final Handler notFoundHandler;
 
     public Router() {
         handlers = new ArrayList<>();
+        notFoundHandler = new NotFoundHandler();
     }
 
     public Handler find(String path) {
@@ -14,7 +16,7 @@ public class Router {
                 return handler;
             }
         }
-        return null;
+        return notFoundHandler;
     }
 
     public void add(Handler handler) {

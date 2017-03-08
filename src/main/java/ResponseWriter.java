@@ -5,12 +5,11 @@ public class ResponseWriter {
         String responseToWrite = "HTTP/1.1 " + response.getStatusCode();
 
         if(response.getLocation() != null) {
-            responseToWrite += "\r\n";
-            responseToWrite += response.getLocation();
+            responseToWrite += response.getLocation() + "\r\n";
         }
 
-        if(!response.getParameters().isEmpty()) {
-            for (Map.Entry header : response.getParameters().entrySet()) {
+        if(!response.getHeaders().isEmpty()) {
+            for (Map.Entry header : response.getHeaders().entrySet()) {
                 responseToWrite += "\r\n";
                 responseToWrite += (header.getKey() + ": " + header.getValue());
             }

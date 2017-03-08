@@ -114,11 +114,7 @@ public class SimpleHandler extends Handler {
         String body = "<html><head></head><body>";
 
         for (String file : publicDirectory.getFiles()) {
-            body += "<a href=\"";
-            body += ("/" + file + "\"");
-            body += ">";
-            body += file;
-            body += "</a></br>";
+            body += "<a href=\"/" + file + "\">" + file + "</a></br>";
         }
 
         body += "</body></html>";
@@ -129,7 +125,6 @@ public class SimpleHandler extends Handler {
         for (int i = 0; i < publicDirectory.getFiles().size(); i++) {
             paths.add("/" + publicDirectory.getFiles().get(i));
         }
-
         paths.add("/");
     }
 }
