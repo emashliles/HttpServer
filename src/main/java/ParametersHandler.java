@@ -8,6 +8,14 @@ public class ParametersHandler extends Handler {
 
         if (checkMethodAllowed(request, response)) return response;
 
+        String responseBody = parametersToString(request);
+
+        response.setStatusCode(HttpStatus.OK.code());
+        response.setBody(responseBody.getBytes());
+        return response;
+    }
+
+    private String parametersToString(Request request) {
         String responseBody = "";
 
         for(String parameter : request.parameters()) {
@@ -15,10 +23,7 @@ public class ParametersHandler extends Handler {
             responseBody += param[0] + " = ";
             responseBody += URLDecoder.decode(param[1]);
         }
-
-        response.setStatusCode(HttpStatus.OK.code());
-        response.setBody(responseBody.getBytes());
-        return response;
+        return responseBody;
     }
 
     @Override
