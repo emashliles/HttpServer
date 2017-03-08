@@ -1,3 +1,4 @@
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -15,10 +16,27 @@ import static org.junit.Assert.assertEquals;
 
 public class ServerTests {
 
+    private Router router;
+
+    @Before
+    public void setUp() {
+        router = new Router();
+        router.add(new CoffeeHandler());
+        router.add(new RedirectHandler());
+        router.add(new FormHandler());
+        router.add(new ParametersHandler());
+        router.add(new MethodOptionsHandler());
+        router.add(new MethodOptions2Handler());
+        router.add(new CookieHandler());
+        router.add(new LoggingHandler());
+        router.add(new SimpleHandler());
+        router.add(new NotFoundHandler());
+    }
+
     @Test
     public void canHandleSimpleGet() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start();
+            Main.start(router);
         });
 
         server.start();
@@ -40,7 +58,7 @@ public class ServerTests {
     @Test
     public void canReturnResponseBody() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start();
+            Main.start(router);
         });
 
         server.start();
@@ -66,11 +84,10 @@ public class ServerTests {
         assertTrue(body.contains("<a href=\"/file1\">file1</a>"));
         assertEquals("text/html", connection.getContentType());
     }
-
     @Test
     public void canReturnPartialFile() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start();
+            Main.start(router);
         });
 
         server.start();
@@ -98,10 +115,11 @@ public class ServerTests {
         assertEquals("This is ", body.toString());
         assertEquals("text/plain", connection.getContentType());
     }
+
     @Test
     public void canReturnFileContents() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start();
+            Main.start(router);
         });
 
         server.start();
@@ -132,7 +150,7 @@ public class ServerTests {
     @Test
     public void canHandleNonExistantPages() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start();
+            Main.start(router);
         });
 
         server.start();
@@ -155,7 +173,7 @@ public class ServerTests {
     @Test
     public void canHandleMethodNotAllowed() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start();
+            Main.start(router);
         });
 
         server.start();
@@ -180,7 +198,7 @@ public class ServerTests {
     @Test
     public void onlyReturnHeadersForHEADRequest() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start();
+            Main.start(router);
         });
 
         server.start();

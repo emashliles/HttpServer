@@ -1,7 +1,3 @@
-import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-
 public class Main {
 
     private static Router router;
@@ -18,46 +14,17 @@ public class Main {
         router.add(new LoggingHandler());
         router.add(new SimpleHandler());
         router.add(new NotFoundHandler());
-        start();
+        start(router);
     }
 
-    public static void start() {
+    public static void start(Router router) {
         while (true) {
-            run();
+            run(router);
         }
     }
 
-    public static void run() {
-        try {
-            try (ServerSocket serverSocket = new ServerSocket(5000);
-                 Socket clientSocket = serverSocket.accept();
-                 OutputStream out = clientSocket.getOutputStream();
-                 InputStreamReader inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
-                 BufferedReader in = new BufferedReader(
-                         inputStreamReader))
-            {
-                RequestParser parser = new RequestParser(in);
-                Request request = new Request(parser.parseHeaders());
-
-                if(request.getContentLength() != 0) {
-                    request.setBody(parser.parseBody(request.getContentLength()));
-                }
-
-                Handler handler = router.find(request.path());
-
-                ResponseWriter responseWriter = new ResponseWriter();
-
-                Response response = handler.handleRequest(request);
-                out.write(responseWriter.responseString(response).getBytes());
-
-                if (response.getBody() != null || !request.httpMethod().equals("HEAD")) {
-                    out.write(response.getBody());
-                }
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static void run(Router router) {
+        new Server(router).invoke();
     }
+
 }
