@@ -3,7 +3,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class Server {
+public class Server implements Runnable{
     private Router router;
     private Socket clientSocket;
 
@@ -15,7 +15,6 @@ public class Server {
     public void run() {
         try {
             try (
-
                  OutputStream out = clientSocket.getOutputStream();
                  InputStreamReader inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
                  BufferedReader in = new BufferedReader(

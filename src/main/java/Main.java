@@ -1,13 +1,19 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
 
-    private static Router router;
+    private static ExecutorService executorService;
 
     public static void main(String[] args) {
-        router = new Router();
+        start();
+    }
+
+    public static void start() {
+        Router router = new Router();
         router.add(new CoffeeHandler());
         router.add(new RedirectHandler());
         router.add(new FormHandler());
@@ -18,24 +24,22 @@ public class Main {
         router.add(new LoggingHandler());
         router.add(new SimpleHandler());
         router.add(new NotFoundHandler());
-        start(router);
-    }
-
-    public static void start(Router router) {
-        while (true) {
-            run(router);
-        }
+        executorService = Executors.newFixedThreadPool(10);
+        run(router);
     }
 
     public static void run(Router router) {
-        try {
-            ServerSocket serverSocket = new ServerSocket(5000);
-            Socket clientSocket = serverSocket.accept();
-            new Server(router, clientSocket).run();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+            try {
+                try(ServerSocket serverSocket = new ServerSocket(5000)) {
+                    while(true) {
+                        Socket clientSocket = serverSocket.accept();
+                        executorService.execute(new Server(router, clientSocket));
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
+
 
 }

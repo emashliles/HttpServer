@@ -36,7 +36,7 @@ public class ServerTests {
     @Test
     public void canHandleSimpleGet() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start(router);
+            Main.start();
         });
 
         server.start();
@@ -58,7 +58,7 @@ public class ServerTests {
     @Test
     public void canReturnResponseBody() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start(router);
+            Main.start();
         });
 
         server.start();
@@ -87,7 +87,7 @@ public class ServerTests {
     @Test
     public void canReturnPartialFile() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start(router);
+            Main.start();
         });
 
         server.start();
@@ -119,7 +119,7 @@ public class ServerTests {
     @Test
     public void canReturnFileContents() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start(router);
+            Main.start();
         });
 
         server.start();
@@ -150,7 +150,7 @@ public class ServerTests {
     @Test
     public void canHandleNonExistantPages() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start(router);
+            Main.start();
         });
 
         server.start();
@@ -173,7 +173,7 @@ public class ServerTests {
     @Test
     public void canHandleMethodNotAllowed() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start(router);
+            Main.start();
         });
 
         server.start();
@@ -198,7 +198,7 @@ public class ServerTests {
     @Test
     public void onlyReturnHeadersForHEADRequest() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start(router);
+            Main.start();
         });
 
         server.start();
