@@ -19,7 +19,6 @@ public class Request {
     private String ifMatch;
 
     public Request(String rawRequest) {
-
         String[] request = rawRequest.split("\r\n\r\n");
         String head = request[0];
 
@@ -84,7 +83,6 @@ public class Request {
         else {
             this.path = path;
         }
-
     }
 
     public int length() {
@@ -111,7 +109,7 @@ public class Request {
         this.body = body;
     }
 
-    public int getConentLength() {
+    public int getContentLength() {
         return conentLength;
     }
 

@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 
-public class PublicDirectory {
+public class Directory {
 
     private String directoryName;
 
-    public PublicDirectory(String directoryName) {
+    public Directory(String directoryName) {
         this.directoryName = directoryName;
     }
 
@@ -21,7 +21,6 @@ public class PublicDirectory {
 
     public List<String> getFiles() {
         URL resource = getClass().getResource(directoryName);
-
         File directory = new File(resource.getPath());
         List<String> files = new ArrayList<>();
 
@@ -33,9 +32,7 @@ public class PublicDirectory {
 
     public byte[] getFileContent(String fileName) {
         URL resource = getClass().getResource(directoryName + "/" + fileName);
-
         File file = new File(resource.getPath());
-
         byte[] fileBytes = new byte[(int) file.length()];
 
         try {

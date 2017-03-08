@@ -7,10 +7,6 @@ public class Main {
     private static Router router;
 
     public static void main(String[] args) {
-        start();
-    }
-
-    public static void start() {
         router = new Router();
         router.add(new CoffeeHandler());
         router.add(new RedirectHandler());
@@ -22,7 +18,10 @@ public class Main {
         router.add(new LoggingHandler());
         router.add(new SimpleHandler());
         router.add(new NotFoundHandler());
+        start();
+    }
 
+    public static void start() {
         while (true) {
             run();
         }
@@ -40,8 +39,8 @@ public class Main {
                 RequestParser parser = new RequestParser(in);
                 Request request = new Request(parser.parseHeaders());
 
-                if(request.getConentLength() != 0) {
-                    request.setBody(parser.parseBody(request.getConentLength()));
+                if(request.getContentLength() != 0) {
+                    request.setBody(parser.parseBody(request.getContentLength()));
                 }
 
                 Handler handler = router.find(request.path());

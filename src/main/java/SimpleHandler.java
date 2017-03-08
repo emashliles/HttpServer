@@ -1,16 +1,15 @@
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleHandler extends HandlerBase implements Handler {
 
     private final List<String> paths;
-    private final PublicDirectory publicDirectory;
+    private final Directory publicDirectory;
 
     public SimpleHandler() {
         super();
         paths = new ArrayList<>();
-        publicDirectory = new PublicDirectory("public");
+        publicDirectory = new Directory("public");
 
         for(int i = 0; i < publicDirectory.getFiles().size(); i++) {
             paths.add("/" + publicDirectory.getFiles().get(i));

@@ -26,14 +26,13 @@ public class RequestParser {
         }
 
         request = rawRequest.toString();
-        System.out.print(request);
         return request;
     }
 
-    public String parseBody(int conentLength) {
+    public String parseBody(int contentLength) {
         String body = "";
 
-        for(int i = 0; i < conentLength; i++) {
+        for(int i = 0; i < contentLength; i++) {
             try {
                 body += (char) in.read();
             } catch (IOException e) {

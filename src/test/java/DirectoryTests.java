@@ -9,11 +9,11 @@ import static org.junit.Assert.assertEquals;
 
 public class DirectoryTests {
 
-    private PublicDirectory publicDirectory;
+    private Directory publicDirectory;
 
     @Before
     public void setUp() {
-        publicDirectory = new PublicDirectory("public");
+        publicDirectory = new Directory("public");
     }
 
     @Test
