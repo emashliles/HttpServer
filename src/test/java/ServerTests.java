@@ -72,7 +72,7 @@ public class ServerTests {
                         connection.getInputStream()));
         Map<String, List<String>> headerFields = connection.getHeaderFields();
 
-        String line = "";
+        String line;
         String body = "";
         while ((line = in.readLine()) != null) {
             body += line;
@@ -103,7 +103,7 @@ public class ServerTests {
                         connection.getInputStream()));
         Map<String, List<String>> headerFields = connection.getHeaderFields();
 
-        String line = "";
+        String line;
         String body = "";
         while ((line = in.readLine()) != null) {
             body += line;
@@ -133,7 +133,7 @@ public class ServerTests {
                         connection.getInputStream()));
         Map<String, List<String>> headerFields = connection.getHeaderFields();
 
-        String line = "";
+        String line;
         String body = "";
         while ((line = in.readLine()) != null) {
             body += line;

@@ -14,7 +14,7 @@ public class RequestParser {
         String head;
 
         try {
-            while ((head = this.in.readLine()) != null) {
+            while ((head = in.readLine()) != null) {
                 if(head.equals("")) {
                     break;
                 }

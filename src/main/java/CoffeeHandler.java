@@ -14,7 +14,7 @@ public class CoffeeHandler extends Handler {
 
     @Override
     protected void addAllowedMethods() {
-        allowedMethods.add("GET");
+        allowedMethods.add(HttpMethod.GET.toString());
     }
 
     @Override
@@ -33,11 +33,6 @@ public class CoffeeHandler extends Handler {
 
     @Override
     public boolean canHandle(String requestedPath) {
-        for(String path : paths) {
-            if(path.equals(requestedPath)) {
-                return true;
-            }
-        }
-        return false;
+        return requestedPath.equals("/tea") || requestedPath.equals("/coffee");
     }
 }

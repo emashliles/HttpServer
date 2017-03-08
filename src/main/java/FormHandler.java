@@ -16,11 +16,11 @@ public class FormHandler extends Handler {
             return response;
         }
 
-        if(request.httpMethod().equals("POST") || request.httpMethod().equals("PUT")) {
+        if(request.httpMethod().equals(HttpMethod.POST.toString()) || request.httpMethod().equals(HttpMethod.PUT.toString())) {
             data = request.body();
         }
 
-        if(request.httpMethod().equals("DELETE")) {
+        if(request.httpMethod().equals(HttpMethod.DELETE.toString())) {
             data = "";
         }
 
@@ -40,9 +40,9 @@ public class FormHandler extends Handler {
 
     @Override
     protected void addAllowedMethods() {
-        allowedMethods.add("POST");
-        allowedMethods.add("PUT");
-        allowedMethods.add("GET");
-        allowedMethods.add("DELETE");
+        allowedMethods.add(HttpMethod.POST.toString());
+        allowedMethods.add(HttpMethod.PUT.toString());
+        allowedMethods.add(HttpMethod.GET.toString());
+        allowedMethods.add(HttpMethod.DELETE.toString());
     }
 }

@@ -6,10 +6,12 @@ import java.net.Socket;
 public class Server implements Runnable{
     private Router router;
     private Socket clientSocket;
+    private ResponseWriter responseWriter;
 
     public Server(Router router, Socket clientSocket) {
         this.router = router;
         this.clientSocket = clientSocket;
+        this.responseWriter = new ResponseWriter();
     }
 
     public void run() {
@@ -28,8 +30,6 @@ public class Server implements Runnable{
                 }
 
                 Handler handler = router.find(request.path());
-
-                ResponseWriter responseWriter = new ResponseWriter();
 
                 Response response = handler.handleRequest(request);
                 out.write(responseWriter.responseString(response).getBytes());

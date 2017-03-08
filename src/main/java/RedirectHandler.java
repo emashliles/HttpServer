@@ -16,9 +16,6 @@ public class RedirectHandler extends Handler {
 
     @Override
     public boolean canHandle(String path) {
-        if(path.equals("/redirect")) {
-            return true;
-        }
-        return false;
+        return path.equals("/redirect");
     }
 }
