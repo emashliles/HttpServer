@@ -9,7 +9,8 @@ public class RedirectHandler extends Handler {
         Response response = new Response();
         response.setStatusCode(HttpStatus.Redirect.code());
         response.setBody("http://localhost:5000/".getBytes());
-        response.setLocation("Location: http://localhost:5000/");
+        response.addHeader("Location", "http://localhost:5000/");
+       // response.setLocation("Location: http://localhost:5000/");
         return response;
     }
 

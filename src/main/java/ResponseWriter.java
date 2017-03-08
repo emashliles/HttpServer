@@ -4,10 +4,6 @@ public class ResponseWriter {
     public String responseString(Response response) {
         String responseToWrite = "HTTP/1.1 " + response.getStatusCode();
 
-        if(response.getLocation() != null) {
-            responseToWrite += response.getLocation() + "\r\n";
-        }
-
         if(!response.getHeaders().isEmpty()) {
             for (Map.Entry header : response.getHeaders().entrySet()) {
                 responseToWrite += "\r\n";

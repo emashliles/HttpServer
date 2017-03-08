@@ -48,7 +48,7 @@ public class HandlerTests {
         Response response = handler.handleRequest(request);
 
         assertEquals("302 Redirect", response.getStatusCode());
-        assertEquals("Location: http://localhost:5000/", response.getLocation());
+        assertEquals("http://localhost:5000/", response.getHeaders().get("Location"));
     }
 
     @Test
