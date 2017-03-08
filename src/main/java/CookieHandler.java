@@ -1,7 +1,4 @@
 public class CookieHandler extends Handler {
-    public CookieHandler() {
-        super();
-    }
 
     @Override
     public Response handleRequest(Request request) {

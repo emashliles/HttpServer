@@ -10,12 +10,7 @@ public class SimpleHandler extends Handler {
         super();
         paths = new ArrayList<>();
         publicDirectory = new Directory("public");
-
-        for(int i = 0; i < publicDirectory.getFiles().size(); i++) {
-            paths.add("/" + publicDirectory.getFiles().get(i));
-        }
-
-        paths.add("/");
+        directoryFiles();
     }
 
     @Override
@@ -23,64 +18,20 @@ public class SimpleHandler extends Handler {
         Response response = new Response();
 
         if (checkMethodAllowed(request, response)) return response;
-
         if (handlePatchRequest(request, response)) return response;
-
         if (handleLogsRequest(request, response)) return response;
 
-        String contentType;
-        byte[] body;
-
-        if(request.path().equals("/")) {
-            contentType = "text/html";
-            body = directoryLinks();
-        }
-        else {
-            contentType = publicDirectory.getContentType(request.path());
-            body = getBody(request);
-        }
-
-        if(request.hasRange()) {
-            response.setStatusCode(HttpStatus.PartialContent.code());
-        }
-        else {
-            response.setStatusCode(HttpStatus.OK.code());
-        }
-
-        response.addHeader("Content-Type", contentType);
-        response.setBody(body);
+        response.addHeader("Content-Type", contentType(request.path()));
+        response.setBody(getBody(request));
+        response.setStatusCode(getHttpStatus(request).code());
 
         return response;
     }
 
-    private boolean handleLogsRequest(Request request, Response response) {
-        if(request.path().equals("/logs")) {
-            if (request.authorization() != null && request.authorization().equals("YWRtaW46aHVudGVyMg==")) {
-                response.setStatusCode(HttpStatus.OK.code());
-                response.setBody(publicDirectory.getFileContent("logs"));
-                return true;
-            } else {
-                response.setStatusCode(HttpStatus.Unauthorized.code());
-                response.addHeader("WWW-Authenticate", "Basic realm=\"logs\"");
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean handlePatchRequest(Request request, Response response) {
-        if(request.httpMethod().equals("PATCH") && request.ifMatch().equals(publicDirectory.getHash("patch-content.txt"))) {
-            response.setStatusCode(HttpStatus.NoContent.code());
-            publicDirectory.setFileContents("patch-content.txt", request.body());
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public boolean canHandle(String requestedPath) {
-        for(String path : paths) {
-            if(path.equals(requestedPath)) {
+        for (String path : paths) {
+            if (path.equals(requestedPath)) {
                 return true;
             }
         }
@@ -94,13 +45,66 @@ public class SimpleHandler extends Handler {
         allowedMethods.add("PATCH");
     }
 
+    private HttpStatus getHttpStatus(Request request) {
+        HttpStatus status;
+        if (request.hasRange()) {
+            status = HttpStatus.PartialContent;
+        } else {
+            status = HttpStatus.OK;
+        }
+        return status;
+    }
+
     private byte[] getBody(Request request) {
         byte[] body;
-
-        if(request.hasRange()) {
-            body = publicDirectory.getPartialFileContent(request.path(), request.rangeStart(), request.rangeEnd());
+        if (request.path().equals("/")) {
+            body = directoryLinks();
+        } else {
+            body = getFileBody(request);
         }
-        else {
+        return body;
+    }
+
+    private String contentType(String path) {
+        String contentType;
+        if (path.equals("/")) {
+            contentType = "text/html";
+        } else {
+            contentType = publicDirectory.getContentType(path);
+        }
+        return contentType;
+    }
+
+    private boolean handlePatchRequest(Request request, Response response) {
+        if (request.httpMethod().equals("PATCH") && request.ifMatch().equals(publicDirectory.getHash("patch-content.txt"))) {
+            response.setStatusCode(HttpStatus.NoContent.code());
+            publicDirectory.setFileContents("patch-content.txt", request.body());
+            return true;
+        }
+        return false;
+    }
+
+    private boolean handleLogsRequest(Request request, Response response) {
+        if (request.path().equals("/logs")) {
+            if (request.authorization() != null && request.authorization().equals("YWRtaW46aHVudGVyMg==")) {
+                response.setStatusCode(HttpStatus.OK.code());
+                response.setBody(publicDirectory.getFileContent("logs"));
+                return true;
+            } else {
+                response.setStatusCode(HttpStatus.Unauthorized.code());
+                response.addHeader("WWW-Authenticate", "Basic realm=\"logs\"");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private byte[] getFileBody(Request request) {
+        byte[] body;
+
+        if (request.hasRange()) {
+            body = publicDirectory.getPartialFileContent(request.path(), request.rangeStart(), request.rangeEnd());
+        } else {
             body = publicDirectory.getFileContent(request.path());
         }
         return body;
@@ -119,5 +123,13 @@ public class SimpleHandler extends Handler {
 
         body += "</body></html>";
         return body.getBytes();
+    }
+
+    private void directoryFiles() {
+        for (int i = 0; i < publicDirectory.getFiles().size(); i++) {
+            paths.add("/" + publicDirectory.getFiles().get(i));
+        }
+
+        paths.add("/");
     }
 }

@@ -2,10 +2,6 @@ import java.net.URLDecoder;
 
 public class ParametersHandler extends Handler {
 
-    public ParametersHandler() {
-        super();
-    }
-
     @Override
     public Response handleRequest(Request request) {
         Response response = new Response();

@@ -16,11 +16,7 @@ public class FormHandler extends Handler {
             return response;
         }
 
-        if(request.httpMethod().equals("POST")) {
-            data = request.body();
-        }
-
-        if(request.httpMethod().equals("PUT")) {
+        if(request.httpMethod().equals("POST") || request.httpMethod().equals("PUT")) {
             data = request.body();
         }
 

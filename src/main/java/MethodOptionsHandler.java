@@ -1,9 +1,5 @@
 public class MethodOptionsHandler extends Handler {
 
-    public MethodOptionsHandler() {
-        super();
-    }
-
     @Override
     public Response handleRequest(Request request) {
         Response response = new Response();
