@@ -1,104 +1,85 @@
-import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Request {
 
-    private List<String> headers;
-    private final String method;
+    private String method;
     private String path;
-    private final String httpVersion;
     private String body;
-    private int conentLength;
     private List<String> parameters;
-    private boolean hasRange;
     private int rangeStart;
     private int rangeEnd;
-    private String cookieData;
-    private String authorization;
-    private String ifMatch;
+    private Map<String, String> headerMap;
 
-    private Request(String rawRequest) {
-        String[] request = rawRequest.split("\r\n\r\n");
-        String head = request[0];
+    private Request(Map<String, String> headers, String body, String method, String path, List parameters) {
+        headerMap = headers;
+        this.body = body;
+        this.method = method;
+        this.path = path;
+        this.parameters = parameters;
+    }
 
-        if(request.length == 2) {
-            body = request[1];
-        }
-
-        headers = Arrays.asList(head.split("\r\n"));
-
+    private static Map<String, String> setSpecificHeaders(List<String> headers) {
+        Map<String, String> headerMap = new HashMap<>();
         for (String header : headers) {
-            if(header.contains("Content-Length")) {
-                String rawLength = header.split(":")[1];
-                conentLength = Integer.parseInt(rawLength.split(" ")[1]);
-            }
-
-            if(header.contains("Range: bytes=")) {
-                hasRange = true;
-                String[] rawRanges = header.split(":")[1].split("=")[1].split("-");
-
-                if(rawRanges.length == 2 && !rawRanges[0].equals("")) {
-                    rangeStart = Integer.parseInt(rawRanges[0]);
-                    rangeEnd = Integer.parseInt(rawRanges[1]);
-                }
-                else if(rawRanges.length == 1) {
-                    rangeStart = Integer.parseInt(rawRanges[0]);
-                    rangeEnd = -1;
-                }
-                else {
-                    rangeStart = -1;
-                    rangeEnd = Integer.parseInt(rawRanges[1]);
-                }
-            }
-
-            if(header.contains("Cookie")) {
-                this.cookieData = header.split(":")[1];
-            }
-
-            if(header.contains("Authorization")) {
-                this.authorization = header.split(":")[1].split(" ")[2];
-            }
-
-            if(header.contains("If-Match")){
-                this.ifMatch = header.split(":")[1].split(" ")[1];
+            if(!header.contains("HTTP/1.1")) {
+                String[] split = header.split(":");
+                headerMap.put(split[0], split[1]);
             }
         }
+        return headerMap;
+    }
 
-        String declaration = headers.get(0);
-        String[] declarations = declaration.split(" ");
-        method = declarations[0];
-        extractPathAndParamters(declarations);
-        httpVersion = declarations[2];
+    private void parseRanges(String[] rawRanges) {
+        if(rawRanges.length == 2 && !rawRanges[0].equals("")) {
+            rangeStart = Integer.parseInt(rawRanges[0]);
+            rangeEnd = Integer.parseInt(rawRanges[1]);
+        }
+        else if(rawRanges.length == 1) {
+            rangeStart = Integer.parseInt(rawRanges[0]);
+            rangeEnd = -1;
+        }
+        else {
+            rangeStart = -1;
+            rangeEnd = Integer.parseInt(rawRanges[1]);
+        }
+    }
+
+    private String[] getRawRanges(String s) {
+        return s.split("=")[1].split("-");
     }
 
     public static Request createRequest(String rawRequest) {
-        return new Request(rawRequest);
-    }
+        String[] requestParts = rawRequest.split("\r\n\r\n");
+        String head = requestParts[0];
+        String body = null;
 
-    private void extractPathAndParamters(String[] declarations) {
+        if(requestParts.length == 2) {
+            body = requestParts[1];
+        }
+
+        List<String> headers = Arrays.asList(head.split("\r\n"));
+
+        String declaration = headers.get(0);
+        String[] declarations = declaration.split(" ");
+        String method = declarations[0];
         String path = declarations[1];
+        List parameters = null;
 
         if(path.contains("?")) {
             String[] pathAndparams = path.split("\\?");
-            this.path = pathAndparams[0];
+            path = pathAndparams[0];
             parameters = Arrays.asList(pathAndparams[1].split("&"));
         }
-        else {
-            this.path = path;
-        }
-    }
 
-    public int length() {
-        return headers.size();
+        Request request = new Request(setSpecificHeaders(headers), body, method, path, parameters);
+        return request;
     }
 
     public String httpMethod() {
         return method;
-    }
-
-    public String httpVersion() {
-        return httpVersion;
     }
 
     public String path() {
@@ -114,7 +95,10 @@ public class Request {
     }
 
     public int getContentLength() {
-        return conentLength;
+        if(headerMap.containsKey("Content-Length")) {
+            String rawLength = headerMap.get("Content-Length");
+            return Integer.parseInt(rawLength.split(" ")[1]);
+        } else return 0;
     }
 
     public List<String> parameters() {
@@ -122,10 +106,13 @@ public class Request {
     }
 
     public boolean hasRange() {
-        return this.hasRange;
+        return headerMap.containsKey("Range");
     }
 
     public int rangeStart() {
+        String range = headerMap.get("Range");
+        String[] rawRanges = getRawRanges(range);
+        parseRanges(rawRanges);
         return this.rangeStart;
     }
 
@@ -134,14 +121,20 @@ public class Request {
     }
 
     public String cookieData() {
-        return this.cookieData;
+        return this.headerMap.get("Cookie");
     }
 
     public String authorization() {
-        return this.authorization;
+        if(headerMap.containsKey("Authorization")) {
+          return this.headerMap.get("Authorization").split(" ")[2];
+        }
+        else return null;
     }
 
     public String ifMatch() {
-        return this.ifMatch;
+        if(headerMap.containsKey("If-Match")){
+            return headerMap.get("If-Match").split(" ")[1];
+        }
+        else return null;
     }
 }

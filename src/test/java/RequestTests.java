@@ -14,18 +14,8 @@ public class RequestTests {
     }
 
     @Test
-    public void canSeparateHeaders() {
-        assertEquals(9, request.length());
-    }
-
-    @Test
     public void separateMethod() {
         assertEquals(request.httpMethod(), "GET");
-    }
-
-    @Test
-    public void separateHTTPVersion() {
-        assertEquals(request.httpVersion(), "HTTP/1.1");
     }
 
     @Test
@@ -64,6 +54,5 @@ public class RequestTests {
     @Test
     public void separateEtag() {
         assertEquals("dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec", request.ifMatch());
-
     }
 }
