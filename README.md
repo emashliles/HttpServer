@@ -27,7 +27,7 @@ To run the cob_spec test suite
 
 ## Adding a new endpoint
 
-* Create a new class that inherits from the abstract class 'Handler'.
+* Create a new class that inherits from the abstract class '[Handler](https://github.com/emashliles/HttpServer/blob/master/src/main/java/Handler.java)'.
 * Implement abstract methods. 
 * To specify endpoint, use the overriden 'canHandle' method to return true for the desired path(s).
 
@@ -47,7 +47,7 @@ To run the cob_spec test suite
     }
 ```
 
-* Write the code to handle the request in the overridden 'handleRequest' method. You will need to create a new 'Response' object. 
+* Write the code to handle the request in the overridden 'handleRequest' method. You will need to create a new '[Response](https://github.com/emashliles/HttpServer/blob/master/src/main/java/Response.java)' object. 
 
 ```
     @Override
@@ -59,7 +59,7 @@ To run the cob_spec test suite
         return response;
     }
 ```
-* Finally, in the 'Main' class, add the handler to the "Router" class's list of handlers.
+* Finally, in the '[Main](https://github.com/emashliles/HttpServer/blob/master/src/main/java/Main.java#L15)' class, add the handler to the "[Router](https://github.com/emashliles/HttpServer/blob/master/src/main/java/Router.java)"'s list of handlers.
 
 ```
         Router router = new Router();
