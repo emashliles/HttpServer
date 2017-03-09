@@ -110,6 +110,16 @@ public class HandlerTests {
     }
 
     @Test
+    public void handleOptions2() {
+        Request request = RequestBuilder.createRequest("OPTIONS /method_options2 HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
+        Handler handler = new MethodOptions2Handler();
+
+        Response response = handler.handleRequest(request);
+
+        assertEquals("GET,OPTIONS", response.getHeaders().get("Allow"));
+    }
+
+    @Test
     public void handlesUnauthenticatedRequest() {
         Request request = RequestBuilder.createRequest("GET /logs HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
         Handler handler = new SimpleHandler(PUBLIC_DIR);
