@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 public class ServerTests {
 
     private Router router;
-    private String PUBLIC_DIR = "src/test/public";
+    private String PUBLIC_DIR = "src/test/resources/public";
 
     private String[] args = {"-d", PUBLIC_DIR};
 

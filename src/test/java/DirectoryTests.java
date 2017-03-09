@@ -12,7 +12,7 @@ public class DirectoryTests {
 
     @Before
     public void setUp() {
-        publicDirectory = new Directory("src/test/public");
+        publicDirectory = new Directory("src/test/resources/public");
     }
 
     @Test

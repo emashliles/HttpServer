@@ -5,7 +5,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public class HandlerTests {
-    private String PUBLIC_DIR = "src/test/public";
+    private String PUBLIC_DIR = "src/test/resources/public";
 
     @Test
     public void handleSimpleGetRequest() {

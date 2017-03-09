@@ -6,7 +6,7 @@ public class RoutingTests {
     @Test
     public void canFindHandlerForPath() {
         Router router = new Router();
-        router.add(new SimpleHandler("src/test/public"));
+        router.add(new SimpleHandler("src/test/resources/public"));
         router.add(new CoffeeHandler());
 
         Handler simpleGetHandler = router.find("/");
