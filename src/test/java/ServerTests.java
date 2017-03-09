@@ -17,6 +17,9 @@ import static org.junit.Assert.assertEquals;
 public class ServerTests {
 
     private Router router;
+    private String PUBLIC_DIR = "src/test/public";
+
+    private String[] args = {"-d", PUBLIC_DIR};
 
     @Before
     public void setUp() {
@@ -29,14 +32,14 @@ public class ServerTests {
         router.add(new MethodOptions2Handler());
         router.add(new CookieHandler());
         router.add(new LoggingHandler());
-        router.add(new SimpleHandler());
+        router.add(new SimpleHandler(PUBLIC_DIR));
         router.add(new NotFoundHandler());
     }
 
     @Test
     public void canHandleSimpleGet() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start();
+            Main.start(args);
         });
 
         server.start();
@@ -58,7 +61,7 @@ public class ServerTests {
     @Test
     public void canReturnResponseBody() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start();
+            Main.start(args);
         });
 
         server.start();
@@ -87,7 +90,7 @@ public class ServerTests {
     @Test
     public void canReturnPartialFile() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start();
+            Main.start(args);
         });
 
         server.start();
@@ -119,7 +122,7 @@ public class ServerTests {
     @Test
     public void canReturnFileContents() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start();
+            Main.start(args);
         });
 
         server.start();
@@ -150,7 +153,7 @@ public class ServerTests {
     @Test
     public void canHandleNonExistantPages() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start();
+            Main.start(args);
         });
 
         server.start();
@@ -173,7 +176,7 @@ public class ServerTests {
     @Test
     public void canHandleMethodNotAllowed() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start();
+            Main.start(args);
         });
 
         server.start();
@@ -198,7 +201,7 @@ public class ServerTests {
     @Test
     public void onlyReturnHeadersForHEADRequest() throws IOException {
         Thread server = new Thread(() -> {
-            Main.start();
+            Main.start(args);
         });
 
         server.start();

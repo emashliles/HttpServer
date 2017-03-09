@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.FileNameMap;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -15,14 +16,11 @@ public class Directory {
         this.directoryName = directoryName;
     }
 
-    public URL getDirectory() {
-        return getClass().getResource(directoryName);
-    }
-
     public List<String> getFiles() {
-        URL resource = getClass().getResource(directoryName);
-        File directory = new File(resource.getPath());
+        File directory = new File(directoryName);
         List<String> files = new ArrayList<>();
+
+        String dir = System.getProperty("user.dir");
 
         for(File file : directory.listFiles()) {
             files.add(file.getName());
@@ -31,8 +29,7 @@ public class Directory {
     }
 
     public byte[] getFileContent(String fileName) {
-        URL resource = getClass().getResource(directoryName + "/" + fileName);
-        File file = new File(resource.getPath());
+        File file = new File(directoryName + "/" + fileName);
         byte[] fileBytes = new byte[(int) file.length()];
 
         try {
@@ -49,7 +46,13 @@ public class Directory {
     }
 
     public String getContentType(String fileName) {
-        URL resource = getClass().getResource(directoryName + "/" + fileName);
+        File file = new File(directoryName + "/" + fileName);
+
+        URL resource = null;
+        try {
+            resource = file.toURI().toURL();
+        } catch (MalformedURLException e) {
+        }
         String type = "text/plain";
 
         try {
@@ -68,7 +71,7 @@ public class Directory {
 
     public byte[] getPartialFileContent(String fileName, int rangeStart, int rangeEnd) {
         URL resource = getClass().getResource(directoryName + "/" + fileName);
-        File file = new File(resource.getPath());
+        File file = new File(directoryName + "/" + fileName);
         byte[] fileBytes = new byte[0];
 
         try {
@@ -105,8 +108,7 @@ public class Directory {
     }
 
     public String getHash(String fileName) {
-        URL resource = getClass().getResource(directoryName + "/" + fileName);
-        File file = new File(resource.getPath());
+        File file = new File(directoryName + "/" + fileName);
         String hash = "";
 
         try {
@@ -138,8 +140,8 @@ public class Directory {
     }
 
     public void setFileContents(String fileName, String newContent) {
-        URL resource = getClass().getResource(directoryName + "/" + fileName);
-        File file = new File(resource.getPath());
+       // URL resource = getClass().getResource(directoryName + "/" + fileName);
+        File file = new File(directoryName + "/" + fileName);
 
         try {
             FileOutputStream outputStream = new FileOutputStream(file, false);

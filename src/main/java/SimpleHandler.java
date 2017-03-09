@@ -6,10 +6,10 @@ public class SimpleHandler extends Handler {
     private final List<String> paths;
     private final Directory publicDirectory;
 
-    public SimpleHandler() {
+    public SimpleHandler(String publicDir) {
         super();
         paths = new ArrayList<>();
-        publicDirectory = new Directory("public");
+        publicDirectory = new Directory(publicDir);
         directoryFiles();
     }
 

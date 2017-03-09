@@ -5,10 +5,12 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public class HandlerTests {
+    private String PUBLIC_DIR = "src/test/public";
+
     @Test
     public void handleSimpleGetRequest() {
         Request request = RequestBuilder.createRequest("GET / HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
-        Handler handler = new SimpleHandler();
+        Handler handler = new SimpleHandler(PUBLIC_DIR);
         Response response = handler.handleRequest(request);
 
         assertEquals("200 OK", response.getStatusCode());
@@ -17,7 +19,7 @@ public class HandlerTests {
     @Test
     public void returnsTrueIfItCanHandleAPath() {
         Request request = RequestBuilder.createRequest("GET / HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
-        Handler handler = new SimpleHandler();
+        Handler handler = new SimpleHandler(PUBLIC_DIR);
 
         assertTrue(handler.canHandle(request.path()));
     }
@@ -25,7 +27,7 @@ public class HandlerTests {
     @Test
     public void returnsFalseIfItCannotHandleAPath() {
         Request request = RequestBuilder.createRequest("GET /coffee HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
-        Handler handler = new SimpleHandler();
+        Handler handler = new SimpleHandler(PUBLIC_DIR);
 
         assertFalse(handler.canHandle(request.path()));
     }
@@ -81,7 +83,7 @@ public class HandlerTests {
     public void handleOnlySpecifiedMethods() {
         Request getRequest = RequestBuilder.createRequest("GET /file1 HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
         Request putRequest = RequestBuilder.createRequest("PUT /file1 HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
-        Handler handler = new SimpleHandler();
+        Handler handler = new SimpleHandler(PUBLIC_DIR);
 
         assertEquals("200 OK", handler.handleRequest(getRequest).getStatusCode());
         assertEquals("405 Method Not Allowed", handler.handleRequest(putRequest).getStatusCode());
@@ -110,7 +112,7 @@ public class HandlerTests {
     @Test
     public void handlesUnauthenticatedRequest() {
         Request request = RequestBuilder.createRequest("GET /logs HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
-        Handler handler = new SimpleHandler();
+        Handler handler = new SimpleHandler(PUBLIC_DIR);
 
         Response response = handler.handleRequest(request);
 
@@ -131,7 +133,7 @@ public class HandlerTests {
     @Test
     public void handlesAuthenticatedRequest() {
         Request request = RequestBuilder.createRequest("GET /logs HTTP/1.1\r\nAuthorization: Basic YWRtaW46aHVudGVyMg==\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
-        Handler handler = new SimpleHandler();
+        Handler handler = new SimpleHandler(PUBLIC_DIR);
 
         Response response = handler.handleRequest(request);
 
@@ -177,7 +179,7 @@ public class HandlerTests {
         Request changeRequest = RequestBuilder.createRequest("PATCH /patch-content.txt HTTP/1.1\r\nIf-Match: dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n\r\npatched content");
         Request revertRequest = RequestBuilder.createRequest("PATCH /patch-content.txt HTTP/1.1\r\nIf-Match: 5c36acad75b78b82be6d9cbbd6143ab7e0cc04b0\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n\r\ndefault content");
         Request request = RequestBuilder.createRequest("GET /patch-content.txt HTTP/1.1\r\nHost: localhost:5000\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
-        Handler handler = new SimpleHandler();
+        Handler handler = new SimpleHandler(PUBLIC_DIR);
 
         Response changeResponse = handler.handleRequest(changeRequest);
         Response revertResponse = handler.handleRequest(revertRequest);

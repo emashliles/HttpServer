@@ -7,12 +7,20 @@ import java.util.concurrent.Executors;
 public class Main {
 
     private static ExecutorService executorService;
+    private static String PUBLIC_DIR;
 
     public static void main(String[] args) {
-        start();
+        start(args);
     }
 
-    public static void start() {
+    public static void start(String[] args) {
+
+        for(int i = 0; i < args.length; i++) {
+            if(args[i].equals("-d")) {
+                PUBLIC_DIR = args[i + 1];
+            }
+        }
+
         Router router = new Router();
         router.add(new CoffeeHandler());
         router.add(new RedirectHandler());
@@ -22,7 +30,7 @@ public class Main {
         router.add(new MethodOptions2Handler());
         router.add(new CookieHandler());
         router.add(new LoggingHandler());
-        router.add(new SimpleHandler());
+        router.add(new SimpleHandler(PUBLIC_DIR));
         executorService = Executors.newFixedThreadPool(100);
         run(router);
     }

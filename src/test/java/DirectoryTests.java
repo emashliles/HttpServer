@@ -1,7 +1,6 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.URL;
 import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
@@ -13,13 +12,7 @@ public class DirectoryTests {
 
     @Before
     public void setUp() {
-        publicDirectory = new Directory("public");
-    }
-
-    @Test
-    public void canFindDirectory() {
-        URL directoryPath = publicDirectory.getDirectory();
-        assertTrue(directoryPath.toString().contains("public"));
+        publicDirectory = new Directory("src/test/public");
     }
 
     @Test
