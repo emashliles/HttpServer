@@ -23,17 +23,17 @@ public class ServerTests {
 
     @Before
     public void setUp() {
-        router = new Router();
-        router.add(new CoffeeHandler());
-        router.add(new RedirectHandler());
-        router.add(new FormHandler());
-        router.add(new ParametersHandler());
-        router.add(new MethodOptionsHandler());
-        router.add(new MethodOptions2Handler());
-        router.add(new CookieHandler());
-        router.add(new LoggingHandler(PUBLIC_DIR));
-        router.add(new SimpleHandler(PUBLIC_DIR));
-        router.add(new NotFoundHandler());
+//        router = new Router();
+//        router.add(new CoffeeHandler());
+//        router.add(new RedirectHandler());
+//        router.add(new FormHandler());
+//        router.add(new ParametersHandler());
+//        router.add(new MethodOptionsHandler());
+//        router.add(new MethodOptions2Handler());
+//        router.add(new CookieHandler());
+//        router.add(new LoggingHandler(PUBLIC_DIR));
+//        router.add(new SimpleHandler(PUBLIC_DIR));
+//        router.add(new NotFoundHandler());
     }
 
     @Test
