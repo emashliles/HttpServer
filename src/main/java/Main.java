@@ -14,6 +14,8 @@ public class Main {
     }
 
     public static void start(String[] args) {
+        Directory publicDirectory = new Directory(PUBLIC_DIR);
+        publicDirectory.createNewEmptyFile("logs");
 
         for(int i = 0; i < args.length; i++) {
             if(args[i].equals("-d")) {
@@ -29,7 +31,7 @@ public class Main {
         router.add(new MethodOptionsHandler());
         router.add(new MethodOptions2Handler());
         router.add(new CookieHandler());
-        router.add(new LoggingHandler());
+        router.add(new LoggingHandler(PUBLIC_DIR));
         router.add(new SimpleHandler(PUBLIC_DIR));
         executorService = Executors.newFixedThreadPool(100);
         run(router);

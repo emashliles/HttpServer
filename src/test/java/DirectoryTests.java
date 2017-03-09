@@ -85,10 +85,17 @@ public class DirectoryTests {
 
     @Test
     public void setFileContents() {
-        publicDirectory.setFileContents("patch-content.txt", "patched content");
+        publicDirectory.setFileContents("patch-content.txt", "patched content", false);
         assertEquals("5c36acad75b78b82be6d9cbbd6143ab7e0cc04b0", publicDirectory.getHash("patch-content.txt"));
 
-        publicDirectory.setFileContents("patch-content.txt", "default content");
+        publicDirectory.setFileContents("patch-content.txt", "default content", false);
         assertEquals("dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec", publicDirectory.getHash("patch-content.txt"));
+    }
+
+    @Test
+    public void createNewFile() {
+        publicDirectory.createNewEmptyFile("logs");
+        assertTrue(publicDirectory.getFiles().contains("logs"));
+
     }
 }

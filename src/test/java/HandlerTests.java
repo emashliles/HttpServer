@@ -123,7 +123,7 @@ public class HandlerTests {
     @Test
     public void handlesLogging() {
         Request request = RequestBuilder.createRequest("GET /log HTTP/1.1\r\nHost: localhost:5000\r\nAuthorization: Basic YWRtaW46aHVudGVyMg==\r\nConnection: Keep-Alive\r\nUser-Agent: Apache-HttpClient/4.3.5 (java 1.5)\r\nAccept-Encoding: gzip,deflate\r\n");
-        Handler handler = new LoggingHandler();
+        Handler handler = new LoggingHandler(PUBLIC_DIR);
 
         Response response = handler.handleRequest(request);
 

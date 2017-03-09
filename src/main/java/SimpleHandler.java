@@ -78,7 +78,7 @@ public class SimpleHandler extends Handler {
     private boolean handlePatchRequest(Request request, Response response) {
         if (request.httpMethod().equals(HttpMethod.PATCH.toString()) && request.ifMatch().equals(publicDirectory.getHash("patch-content.txt"))) {
             response.setStatusCode(HttpStatus.NoContent.code());
-            publicDirectory.setFileContents("patch-content.txt", request.body());
+            publicDirectory.setFileContents("patch-content.txt", request.body(), false);
             return true;
         }
         return false;
@@ -125,6 +125,7 @@ public class SimpleHandler extends Handler {
         for (int i = 0; i < publicDirectory.getFiles().size(); i++) {
             paths.add("/" + publicDirectory.getFiles().get(i));
         }
+        paths.add("/logs");
         paths.add("/");
     }
 }

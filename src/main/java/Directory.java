@@ -20,8 +20,6 @@ public class Directory {
         File directory = new File(directoryName);
         List<String> files = new ArrayList<>();
 
-        String dir = System.getProperty("user.dir");
-
         for(File file : directory.listFiles()) {
             files.add(file.getName());
         }
@@ -70,7 +68,6 @@ public class Directory {
     }
 
     public byte[] getPartialFileContent(String fileName, int rangeStart, int rangeEnd) {
-        URL resource = getClass().getResource(directoryName + "/" + fileName);
         File file = new File(directoryName + "/" + fileName);
         byte[] fileBytes = new byte[0];
 
@@ -139,12 +136,11 @@ public class Directory {
 
     }
 
-    public void setFileContents(String fileName, String newContent) {
-       // URL resource = getClass().getResource(directoryName + "/" + fileName);
+    public void setFileContents(String fileName, String newContent, boolean append) {
         File file = new File(directoryName + "/" + fileName);
 
         try {
-            FileOutputStream outputStream = new FileOutputStream(file, false);
+            FileOutputStream outputStream = new FileOutputStream(file, append);
             byte[] myBytes = newContent.getBytes();
             outputStream.write(myBytes);
             outputStream.close();
@@ -152,5 +148,10 @@ public class Directory {
             e.printStackTrace();
         }
 
+    }
+
+    public void createNewEmptyFile(String fileName) {
+        File file = new File(directoryName + "/" + fileName);
+        file.mkdir();
     }
 }
