@@ -1,81 +1,22 @@
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.URLDecoder;
+import java.util.*;
 
 public class Request {
 
     private String method;
     private String path;
     private String body;
-    private List<String> parameters;
+    private Map<String, String> parameters;
     private int rangeStart;
     private int rangeEnd;
     private Map<String, String> headerMap;
 
-    private Request(Map<String, String> headers, String body, String method, String path, List parameters) {
+    public Request(Map<String, String> headers, String body, String method, String path, Map parameters) {
         headerMap = headers;
         this.body = body;
         this.method = method;
         this.path = path;
         this.parameters = parameters;
-    }
-
-    private static Map<String, String> setSpecificHeaders(List<String> headers) {
-        Map<String, String> headerMap = new HashMap<>();
-        for (String header : headers) {
-            if(!header.contains("HTTP/1.1")) {
-                String[] split = header.split(":");
-                headerMap.put(split[0], split[1]);
-            }
-        }
-        return headerMap;
-    }
-
-    private void parseRanges(String[] rawRanges) {
-        if(rawRanges.length == 2 && !rawRanges[0].equals("")) {
-            rangeStart = Integer.parseInt(rawRanges[0]);
-            rangeEnd = Integer.parseInt(rawRanges[1]);
-        }
-        else if(rawRanges.length == 1) {
-            rangeStart = Integer.parseInt(rawRanges[0]);
-            rangeEnd = -1;
-        }
-        else {
-            rangeStart = -1;
-            rangeEnd = Integer.parseInt(rawRanges[1]);
-        }
-    }
-
-    private String[] getRawRanges(String s) {
-        return s.split("=")[1].split("-");
-    }
-
-    public static Request createRequest(String rawRequest) {
-        String[] requestParts = rawRequest.split("\r\n\r\n");
-        String head = requestParts[0];
-        String body = null;
-
-        if(requestParts.length == 2) {
-            body = requestParts[1];
-        }
-
-        List<String> headers = Arrays.asList(head.split("\r\n"));
-
-        String declaration = headers.get(0);
-        String[] declarations = declaration.split(" ");
-        String method = declarations[0];
-        String path = declarations[1];
-        List parameters = null;
-
-        if(path.contains("?")) {
-            String[] pathAndparams = path.split("\\?");
-            path = pathAndparams[0];
-            parameters = Arrays.asList(pathAndparams[1].split("&"));
-        }
-
-        Request request = new Request(setSpecificHeaders(headers), body, method, path, parameters);
-        return request;
     }
 
     public String httpMethod() {
@@ -101,7 +42,7 @@ public class Request {
         } else return 0;
     }
 
-    public List<String> parameters() {
+    public Map parameters() {
         return this.parameters;
     }
 
@@ -136,5 +77,37 @@ public class Request {
             return headerMap.get("If-Match").split(" ")[1];
         }
         else return null;
+    }
+
+    public String parameter(String parameterKey) {
+        return URLDecoder.decode(parameters.get(parameterKey));
+    }
+
+    public int parametersCount() {
+        return parameters().size();
+    }
+
+    public String paramterKey(int index) {
+        List<String> values = new ArrayList<>(parameters().keySet());
+        return values.get(index).toString();
+    }
+
+    private void parseRanges(String[] rawRanges) {
+        if(rawRanges.length == 2 && !rawRanges[0].equals("")) {
+            rangeStart = Integer.parseInt(rawRanges[0]);
+            rangeEnd = Integer.parseInt(rawRanges[1]);
+        }
+        else if(rawRanges.length == 1) {
+            rangeStart = Integer.parseInt(rawRanges[0]);
+            rangeEnd = -1;
+        }
+        else {
+            rangeStart = -1;
+            rangeEnd = Integer.parseInt(rawRanges[1]);
+        }
+    }
+
+    private String[] getRawRanges(String s) {
+        return s.split("=")[1].split("-");
     }
 }

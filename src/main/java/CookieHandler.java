@@ -15,11 +15,9 @@ public class CookieHandler extends Handler {
 
             String cookieData = "";
 
-            for (String parameter :request.parameters()) {
-                if(parameter.contains("type")) {
-                    cookieData = parameter.split("=")[1];
+                if(request.parameters().get("type") != null ) {
+                    cookieData = request.parameter("type");
                 }
-            }
             response.addHeader("Set-Cookie", cookieData);
         }
 

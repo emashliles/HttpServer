@@ -1,4 +1,5 @@
 import java.net.URLDecoder;
+import java.util.Map;
 
 public class ParametersHandler extends Handler {
 
@@ -18,17 +19,16 @@ public class ParametersHandler extends Handler {
     private String parametersToString(Request request) {
         String responseBody = "";
 
-        for(String parameter : request.parameters()) {
-            String[] param = parameter.split("=");
-            responseBody += param[0] + " = ";
-            responseBody += URLDecoder.decode(param[1]);
+        for(int i = 0; i < request.parametersCount(); i ++) {
+            String parameterKey = request.paramterKey(i);
+            responseBody += parameterKey + " = " +  request.parameter(parameterKey);
         }
         return responseBody;
     }
 
     @Override
     public boolean canHandle(String path) {
-        return path.contains("parameters");
+        return path.equals("/parameters");
     }
 
     @Override
