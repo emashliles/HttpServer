@@ -16,14 +16,16 @@ To Build
 mvn package
 ```
 
-To run the server
+To run the server, navigate to the target directory after building and run
 
 ```
+java -jar HttpServer-1.0.jar -d /path/to/public/dir
 ```
 
 To run the cob_spec test suite 
 
 ```
+Use intellij for now
 ```
 
 ## Adding a new endpoint
