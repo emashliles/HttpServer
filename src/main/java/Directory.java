@@ -27,7 +27,7 @@ public class Directory {
     }
 
     public byte[] getFileContent(String fileName) {
-        File file = new File(directoryName + "/" + fileName);
+        File file = getFile(fileName);
         byte[] fileBytes = new byte[(int) file.length()];
 
         try {
@@ -39,12 +39,11 @@ public class Directory {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return fileBytes;
     }
 
     public String getContentType(String fileName) {
-        File file = new File(directoryName + "/" + fileName);
+        File file = getFile(fileName);
 
         URL resource = null;
         try {
@@ -68,7 +67,7 @@ public class Directory {
     }
 
     public byte[] getPartialFileContent(String fileName, int rangeStart, int rangeEnd) {
-        File file = new File(directoryName + "/" + fileName);
+        File file = getFile(fileName);
         byte[] fileBytes = new byte[0];
 
         try {
@@ -98,46 +97,32 @@ public class Directory {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return fileBytes;
-
-
     }
 
-    public String getHash(String fileName) {
-        File file = new File(directoryName + "/" + fileName);
-        String hash = "";
+    private MessageDigest getRawHash(File file) {
+        MessageDigest rawHash = null;
 
         try {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA1");
-
+            rawHash = MessageDigest.getInstance("SHA1");
             try (InputStream is = new BufferedInputStream(new FileInputStream(file))) {
                 final byte[] buffer = new byte[1024];
-                for (int read = 0; (read = is.read(buffer)) != -1;) {
-                    messageDigest.update(buffer, 0, read);
+                for (int read = 0; (read = is.read(buffer)) != -1; ) {
+                    rawHash.update(buffer, 0, read);
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            try (Formatter formatter = new Formatter()) {
-                for (final byte b : messageDigest.digest()) {
-                    formatter.format("%02x", b);
-                }
-                hash = formatter.toString();
-            }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-
-        return hash;
-
+        return rawHash;
     }
 
     public void setFileContents(String fileName, String newContent, boolean append) {
-        File file = new File(directoryName + "/" + fileName);
+        File file = getFile(fileName);
 
         try {
             FileOutputStream outputStream = new FileOutputStream(file, append);
@@ -151,7 +136,32 @@ public class Directory {
     }
 
     public void createNewEmptyFile(String fileName) {
-        File file = new File(directoryName + "/" + fileName);
+        File file = getFile(fileName);
         file.mkdir();
+    }
+
+    public String getHash(String fileName) {
+        File file = getFile(fileName);
+        String hash = "";
+
+        MessageDigest rawHash = getRawHash(file);
+        hash = formatHash(rawHash);
+
+        return hash;
+    }
+
+    private File getFile(String fileName) {
+        return new File(directoryName + "/" + fileName);
+    }
+
+    private String formatHash(MessageDigest rawHash) {
+        String hash;
+        try (Formatter formatter = new Formatter()) {
+            for (final byte b : rawHash.digest()) {
+                formatter.format("%02x", b);
+            }
+            hash = formatter.toString();
+        }
+        return hash;
     }
 }
