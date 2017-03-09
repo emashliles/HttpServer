@@ -59,3 +59,11 @@ To run the cob_spec test suite
         return response;
     }
 ```
+* Finally, in the 'Main' class, add the handler to the "Router" class's list of handlers.
+
+```
+        Router router = new Router();
+        router.add(new CoffeeHandler());
+        router.add(new RedirectHandler());
+        //etc
+```
