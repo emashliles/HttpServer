@@ -45,11 +45,7 @@ public class Directory {
     public String getContentType(String fileName) {
         File file = getFile(fileName);
 
-        URL resource = null;
-        try {
-            resource = file.toURI().toURL();
-        } catch (MalformedURLException e) {
-        }
+        URL resource = getUrl(file);
         String type = "text/plain";
 
         try {
@@ -71,22 +67,10 @@ public class Directory {
         byte[] fileBytes = new byte[0];
 
         try {
-            if(rangeEnd == -1) {
-                rangeEnd = ((int) file.length() - 1);
-            }
-            if(rangeStart == -1) {
-                rangeStart = ((int) file.length()) - rangeEnd;
-            }
+            rangeEnd = checkRangeEndValue(rangeEnd, file);
+            rangeStart = checkRangeStartValue(rangeStart, rangeEnd, file);
 
-            int rangeSize;
-
-            if(rangeEnd > rangeStart) {
-                rangeSize = (rangeEnd + 1) - rangeStart;
-            }
-            else {
-                rangeEnd += rangeStart;
-                rangeSize = rangeEnd - rangeStart;
-            }
+            int rangeSize = getRangeSize(rangeStart, rangeEnd);
 
             fileBytes = new byte[rangeSize];
             RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
@@ -98,6 +82,70 @@ public class Directory {
             e.printStackTrace();
         }
         return fileBytes;
+    }
+
+    private int getRangeSize(int rangeStart, int rangeEnd) {
+        int rangeSize;
+        if(rangeEnd > rangeStart) {
+            rangeSize = (rangeEnd + 1) - rangeStart;
+        }
+        else {
+            rangeEnd += rangeStart;
+            rangeSize = rangeEnd - rangeStart;
+        }
+        return rangeSize;
+    }
+
+    public void createNewEmptyFile(String fileName) {
+        File file = getFile(fileName);
+        file.mkdir();
+    }
+
+    public void setFileContents(String fileName, String newContent, boolean append) {
+        File file = getFile(fileName);
+
+        try {
+            FileOutputStream outputStream = new FileOutputStream(file, append);
+            byte[] myBytes = newContent.getBytes();
+            outputStream.write(myBytes);
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public String getHash(String fileName) {
+        File file = getFile(fileName);
+        String hash = "";
+
+        MessageDigest rawHash = getRawHash(file);
+        hash = formatHash(rawHash);
+
+        return hash;
+    }
+
+    private int checkRangeStartValue(int rangeStart, int rangeEnd, File file) {
+        if(rangeStart == -1) {
+            rangeStart = ((int) file.length()) - rangeEnd;
+        }
+        return rangeStart;
+    }
+
+    private URL getUrl(File file) {
+        URL resource = null;
+        try {
+            resource = file.toURI().toURL();
+        } catch (MalformedURLException e) {
+        }
+        return resource;
+    }
+
+    private int checkRangeEndValue(int rangeEnd, File file) {
+        if(rangeEnd == -1) {
+            rangeEnd = ((int) file.length() - 1);
+        }
+        return rangeEnd;
     }
 
     private MessageDigest getRawHash(File file) {
@@ -119,35 +167,6 @@ public class Directory {
             e.printStackTrace();
         }
         return rawHash;
-    }
-
-    public void setFileContents(String fileName, String newContent, boolean append) {
-        File file = getFile(fileName);
-
-        try {
-            FileOutputStream outputStream = new FileOutputStream(file, append);
-            byte[] myBytes = newContent.getBytes();
-            outputStream.write(myBytes);
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void createNewEmptyFile(String fileName) {
-        File file = getFile(fileName);
-        file.mkdir();
-    }
-
-    public String getHash(String fileName) {
-        File file = getFile(fileName);
-        String hash = "";
-
-        MessageDigest rawHash = getRawHash(file);
-        hash = formatHash(rawHash);
-
-        return hash;
     }
 
     private File getFile(String fileName) {
