@@ -19,10 +19,10 @@ public class MethodOptionsHandler extends Handler {
 
     @Override
     protected void addAllowedMethods() {
-        allowedMethods.add("GET");
-        allowedMethods.add("HEAD");
-        allowedMethods.add("POST");
-        allowedMethods.add("OPTIONS");
-        allowedMethods.add("PUT");
+        allowedMethods.add(HttpMethod.GET.toString());
+        allowedMethods.add(HttpMethod.HEAD.toString());
+        allowedMethods.add(HttpMethod.POST.toString());
+        allowedMethods.add(HttpMethod.OPTIONS.toString());
+        allowedMethods.add(HttpMethod.PUT.toString());
     }
 }

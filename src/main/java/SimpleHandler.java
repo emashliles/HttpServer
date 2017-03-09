@@ -40,9 +40,9 @@ public class SimpleHandler extends Handler {
 
     @Override
     protected void addAllowedMethods() {
-        allowedMethods.add("GET");
-        allowedMethods.add("HEAD");
-        allowedMethods.add("PATCH");
+        allowedMethods.add(HttpMethod.GET.toString());
+        allowedMethods.add(HttpMethod.HEAD.toString());
+        allowedMethods.add(HttpMethod.PATCH.toString());
     }
 
     private HttpStatus getHttpStatus(Request request) {
@@ -76,7 +76,7 @@ public class SimpleHandler extends Handler {
     }
 
     private boolean handlePatchRequest(Request request, Response response) {
-        if (request.httpMethod().equals("PATCH") && request.ifMatch().equals(publicDirectory.getHash("patch-content.txt"))) {
+        if (request.httpMethod().equals(HttpMethod.PATCH.toString()) && request.ifMatch().equals(publicDirectory.getHash("patch-content.txt"))) {
             response.setStatusCode(HttpStatus.NoContent.code());
             publicDirectory.setFileContents("patch-content.txt", request.body());
             return true;

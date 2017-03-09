@@ -14,8 +14,8 @@ public class LoggingHandler extends Handler {
 
     @Override
     protected void addAllowedMethods() {
-        allowedMethods.add("GET");
-        allowedMethods.add("PUT");
-        allowedMethods.add("HEAD");
+        allowedMethods.add(HttpMethod.GET.toString());
+        allowedMethods.add(HttpMethod.PUT.toString());
+        allowedMethods.add(HttpMethod.HEAD.toString());
     }
 }

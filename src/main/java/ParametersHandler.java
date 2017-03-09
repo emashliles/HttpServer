@@ -33,6 +33,6 @@ public class ParametersHandler extends Handler {
 
     @Override
     protected void addAllowedMethods() {
-        allowedMethods.add("GET");
+        allowedMethods.add(HttpMethod.GET.toString());
     }
 }

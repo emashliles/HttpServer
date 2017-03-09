@@ -34,7 +34,7 @@ public class Server implements Runnable{
                 Response response = handler.handleRequest(request);
                 out.write(responseWriter.responseString(response).getBytes());
 
-                if (response.getBody() != null || !request.httpMethod().equals("HEAD")) {
+                if (response.getBody() != null || !request.httpMethod().equals(HttpMethod.HEAD.toString())) {
                     out.write(response.getBody());
                 }
 

@@ -1,7 +1,7 @@
 public class NotFoundHandler extends Handler {
     @Override
     protected void addAllowedMethods() {
-        allowedMethods.add("GET");
+        allowedMethods.add(HttpMethod.GET.toString());
     }
 
     @Override

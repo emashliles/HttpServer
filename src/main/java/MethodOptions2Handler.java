@@ -18,7 +18,7 @@ public class MethodOptions2Handler extends Handler {
 
     @Override
     protected void addAllowedMethods() {
-        allowedMethods.add("GET");
-        allowedMethods.add("OPTIONS");
+        allowedMethods.add(HttpMethod.GET.toString());
+        allowedMethods.add(HttpMethod.OPTIONS.toString());
     }
 }
