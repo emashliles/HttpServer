@@ -1,18 +1,12 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.List;
-import java.util.Map;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class ServerTests {
 
@@ -20,200 +14,96 @@ public class ServerTests {
     private String PUBLIC_DIR = "src/test/resources/public";
 
     private String[] args = {"-d", PUBLIC_DIR};
+    private ByteArrayOutputStream out;
 
     @Before
     public void setUp() {
-//        router = new Router();
-//        router.add(new CoffeeHandler());
-//        router.add(new RedirectHandler());
-//        router.add(new FormHandler());
-//        router.add(new ParametersHandler());
-//        router.add(new MethodOptionsHandler());
-//        router.add(new MethodOptions2Handler());
-//        router.add(new CookieHandler());
-//        router.add(new LoggingHandler(PUBLIC_DIR));
-//        router.add(new SimpleHandler(PUBLIC_DIR));
-//        router.add(new NotFoundHandler());
+        router = new Router();
+        router.add(new CoffeeHandler());
+        router.add(new RedirectHandler());
+        router.add(new FormHandler());
+        router.add(new ParametersHandler());
+        router.add(new MethodOptionsHandler());
+        router.add(new MethodOptions2Handler());
+        router.add(new CookieHandler());
+        router.add(new LoggingHandler(PUBLIC_DIR));
+        router.add(new SimpleHandler(PUBLIC_DIR));
+        router.add(new NotFoundHandler());
+        out = new ByteArrayOutputStream();
     }
 
     @Test
     public void canHandleSimpleGet() throws IOException {
-        Thread server = new Thread(() -> {
-            Main.start(args);
-        });
+        ByteArrayInputStream in = new ByteArrayInputStream("GET / HTTP/1.1".getBytes());
 
-        server.start();
+        Server server = new Server(router, in, out);
+        server.run();
 
-        URL url = new URL("http://localhost:5000/");
-
-        URLConnection connection = url.openConnection();
-
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(
-                        connection.getInputStream()));
-        Map<String, List<String>> headerFields = connection.getHeaderFields();
-        in.close();
-
-        assertEquals("HTTP/1.1 200 OK", headerFields.get(null).get(0));
-        assertEquals("text/html", connection.getContentType());
+        assertTrue(out.toString().contains("HTTP/1.1 200 OK"));
+        assertTrue(out.toString().contains("text/html"));
     }
 
     @Test
     public void canReturnResponseBody() throws IOException {
-        Thread server = new Thread(() -> {
-            Main.start(args);
-        });
+        ByteArrayInputStream in = new ByteArrayInputStream("GET / HTTP/1.1".getBytes());
 
-        server.start();
+        Server server = new Server(router, in, out);
+        server.run();
 
-        URL url = new URL("http://localhost:5000/");
-
-        URLConnection connection = url.openConnection();
-
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(
-                        connection.getInputStream()));
-        Map<String, List<String>> headerFields = connection.getHeaderFields();
-
-        String line;
-        String body = "";
-        while ((line = in.readLine()) != null) {
-            body += line;
-        }
-
-        in.close();
-
-        assertEquals("HTTP/1.1 200 OK", headerFields.get(null).get(0));
-        assertTrue(body.contains("<a href=\"/file1\">file1</a>"));
-        assertEquals("text/html", connection.getContentType());
+        assertTrue(out.toString().contains("<a href=\"/file1\">file1</a>"));
     }
     @Test
     public void canReturnPartialFile() throws IOException {
-        Thread server = new Thread(() -> {
-            Main.start(args);
-        });
+        ByteArrayInputStream in = new ByteArrayInputStream("GET /partial_content.txt HTTP/1.1\r\nRange: bytes=0-7\r\n".getBytes());
 
-        server.start();
+        Server server = new Server(router, in, out);
+        server.run();
 
-        URL url = new URL("http://localhost:5000/partial_content.txt");
-
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestProperty("Range", "bytes=0-7");
-
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(
-                        connection.getInputStream()));
-        Map<String, List<String>> headerFields = connection.getHeaderFields();
-
-        String line;
-        String body = "";
-        while ((line = in.readLine()) != null) {
-            body += line;
-        }
-
-        in.close();
-
-        assertEquals("HTTP/1.1 206 Partial Content", headerFields.get(null).get(0));
-        assertEquals("This is ", body.toString());
-        assertEquals("text/plain", connection.getContentType());
+        assertTrue(out.toString().contains("HTTP/1.1 206 Partial Content"));
+        assertTrue(out.toString().contains("This is "));
+        assertTrue(out.toString().contains("text/plain"));
     }
 
     @Test
     public void canReturnFileContents() throws IOException {
-        Thread server = new Thread(() -> {
-            Main.start(args);
-        });
+        ByteArrayInputStream in = new ByteArrayInputStream("GET /file1 HTTP/1.1\r\n".getBytes());
 
-        server.start();
+        Server server = new Server(router, in, out);
+        server.run();
 
-        URL url = new URL("http://localhost:5000/file1");
-
-        URLConnection connection = url.openConnection();
-
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(
-                        connection.getInputStream()));
-        Map<String, List<String>> headerFields = connection.getHeaderFields();
-
-        String line;
-        String body = "";
-        while ((line = in.readLine()) != null) {
-            body += line;
-        }
-
-        in.close();
-
-        assertEquals("HTTP/1.1 200 OK", headerFields.get(null).get(0));
-        assertTrue(body.contains("file1 contents"));
-        assertEquals("text/plain", connection.getContentType());
-
+        assertTrue(out.toString().contains("HTTP/1.1 200 OK"));
+        assertTrue(out.toString().contains("file1 contents"));
+        assertTrue(out.toString().contains("text/plain"));
     }
 
     @Test
     public void canHandleNonExistantPages() throws IOException {
-        Thread server = new Thread(() -> {
-            Main.start(args);
-        });
+        ByteArrayInputStream in = new ByteArrayInputStream("GET /foobar HTTP/1.1\r\n".getBytes());
 
-        server.start();
+        Server server = new Server(router, in, out);
+        server.run();
 
-        URL url = new URL("http://localhost:5000/foobar");
-
-        URLConnection connection = url.openConnection();
-
-        try {
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(
-                            connection.getInputStream()));
-        }
-        catch (Exception e) {
-            assertTrue(e instanceof FileNotFoundException);
-
-        }
+        assertTrue(out.toString().contains("HTTP/1.1 404 Not Found"));
     }
 
     @Test
     public void canHandleMethodNotAllowed() throws IOException {
-        Thread server = new Thread(() -> {
-            Main.start(args);
-        });
+        ByteArrayInputStream in = new ByteArrayInputStream("PUT /file1 HTTP/1.1\r\n".getBytes());
 
-        server.start();
+        Server server = new Server(router, in, out);
+        server.run();
 
-        URL url = new URL("http://localhost:5000/file1");
-
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestMethod("PUT");
-
-        try {
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(
-                            connection.getInputStream()));
-        }
-        catch (IOException e) {
-            assertTrue(e.getMessage().equals("Server returned HTTP response code: 405 for URL: http://localhost:5000/file1"));
-
-        }
+        assertTrue(out.toString().contains("HTTP/1.1 405 Method Not Allowed"));
     }
 
     @Test
     public void onlyReturnHeadersForHEADRequest() throws IOException {
-        Thread server = new Thread(() -> {
-            Main.start(args);
-        });
+        ByteArrayInputStream in = new ByteArrayInputStream("HEAD /file1 HTTP/1.1\r\n".getBytes());
 
-        server.start();
+        Server server = new Server(router, in, out);
+        server.run();
 
-        URL url = new URL("http://localhost:5000/file1");
-
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestMethod("HEAD");
-
-        assertEquals(false, connection.getHeaderFields().isEmpty());
-        assertEquals(-1, connection.getInputStream().read());
-
+        assertTrue(out.toString().contains("HTTP/1.1 200 OK"));
+        assertFalse(out.toString().contains("\r\n\r\n"));
     }
 }

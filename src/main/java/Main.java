@@ -1,6 +1,4 @@
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -44,7 +42,7 @@ public class Main {
             try (ServerSocket serverSocket = new ServerSocket(5000)) {
                 while (true) {
                     Socket clientSocket = serverSocket.accept();
-                    executorService.execute(new Server(router, clientSocket, clientSocket.getInputStream(), clientSocket.getOutputStream()));
+                    executorService.execute(new Server(router, clientSocket.getInputStream(), clientSocket.getOutputStream()));
                 }
             }
         } catch (IOException e) {

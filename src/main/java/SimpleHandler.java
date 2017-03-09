@@ -100,7 +100,11 @@ public class SimpleHandler extends Handler {
     }
 
     private byte[] getFileBody(Request request) {
-        byte[] body;
+        byte[] body = null;
+
+        if(request.httpMethod().equals(HttpMethod.HEAD.toString())) {
+            return body;
+        }
 
         if (request.hasRange()) {
             body = publicDirectory.getPartialFileContent(request.path(), request.rangeStart(), request.rangeEnd());

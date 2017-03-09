@@ -10,3 +10,5 @@ GET /log HTTP/1.1
 GET /log HTTP/1.1
 GET /log HTTP/1.1
 GET /log HTTP/1.1
+GET /log HTTP/1.1
+GET /log HTTP/1.1
