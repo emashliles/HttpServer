@@ -13,6 +13,7 @@ git@github.com:emashliles/HttpServer.git
 To Build
 
 ```
+mvn package
 ```
 
 To run the server
