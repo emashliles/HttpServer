@@ -33,7 +33,7 @@ public class ServerTests {
     }
 
     @Test
-    public void canHandleSimpleGet() throws IOException {
+    public void handleSimpleGet() throws IOException {
         ByteArrayInputStream in = new ByteArrayInputStream("GET / HTTP/1.1".getBytes());
 
         Server server = new Server(router, in, out);
@@ -44,7 +44,7 @@ public class ServerTests {
     }
 
     @Test
-    public void canReturnResponseBody() throws IOException {
+    public void returnResponseBody() throws IOException {
         ByteArrayInputStream in = new ByteArrayInputStream("GET / HTTP/1.1".getBytes());
 
         Server server = new Server(router, in, out);
@@ -53,7 +53,7 @@ public class ServerTests {
         assertTrue(out.toString().contains("<a href=\"/file1\">file1</a>"));
     }
     @Test
-    public void canReturnPartialFile() throws IOException {
+    public void returnPartialFile() throws IOException {
         ByteArrayInputStream in = new ByteArrayInputStream("GET /partial_content.txt HTTP/1.1\r\nRange: bytes=0-7\r\n".getBytes());
 
         Server server = new Server(router, in, out);
@@ -65,7 +65,7 @@ public class ServerTests {
     }
 
     @Test
-    public void canReturnFileContents() throws IOException {
+    public void returnFileContents() throws IOException {
         ByteArrayInputStream in = new ByteArrayInputStream("GET /file1 HTTP/1.1\r\n".getBytes());
 
         Server server = new Server(router, in, out);
@@ -77,7 +77,7 @@ public class ServerTests {
     }
 
     @Test
-    public void canHandleNonExistantPages() throws IOException {
+    public void handleNonExistantPages() throws IOException {
         ByteArrayInputStream in = new ByteArrayInputStream("GET /foobar HTTP/1.1\r\n".getBytes());
 
         Server server = new Server(router, in, out);
@@ -87,7 +87,7 @@ public class ServerTests {
     }
 
     @Test
-    public void canHandleMethodNotAllowed() throws IOException {
+    public void handleMethodNotAllowed() throws IOException {
         ByteArrayInputStream in = new ByteArrayInputStream("PUT /file1 HTTP/1.1\r\n".getBytes());
 
         Server server = new Server(router, in, out);

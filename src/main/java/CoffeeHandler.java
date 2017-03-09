@@ -1,16 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class CoffeeHandler extends Handler {
-
-    private List<String> paths;
-
-    public CoffeeHandler() {
-        super();
-        paths = new ArrayList<>();
-        paths.add("/coffee");
-        paths.add("/tea");
-    }
 
     @Override
     protected void addAllowedMethods() {

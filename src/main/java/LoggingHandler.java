@@ -1,15 +1,15 @@
 public class LoggingHandler extends Handler {
 
-    private final Directory publiDirectory;
+    private final Directory publicDirectory;
 
     public LoggingHandler(String publicDir) {
         super();
-        publiDirectory = new Directory(publicDir);
+        publicDirectory = new Directory(publicDir);
     }
 
     @Override
     public Response handleRequest(Request request) {
-        publiDirectory.setFileContents("logs", request.httpMethod() + " " + request.path() + " HTTP/1.1\r\n", true);
+        publicDirectory.setFileContents("logs", request.httpMethod() + " " + request.path() + " HTTP/1.1\r\n", true);
 
         Response response = new Response();
         response.setStatusCode(HttpStatus.OK.code());

@@ -17,11 +17,7 @@ public class Main {
         Directory publicDirectory = new Directory(PUBLIC_DIR);
         publicDirectory.createNewEmptyFile("logs");
 
-        for(int i = 0; i < args.length; i++) {
-            if(args[i].equals("-d")) {
-                PUBLIC_DIR = args[i + 1];
-            }
-        }
+        getPublicDir(args);
 
         Router router = new Router();
         router.add(new CoffeeHandler());
@@ -47,6 +43,14 @@ public class Main {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void getPublicDir(String[] args) {
+        for(int i = 0; i < args.length; i++) {
+            if(args[i].equals("-d")) {
+                PUBLIC_DIR = args[i + 1];
+            }
         }
     }
 }

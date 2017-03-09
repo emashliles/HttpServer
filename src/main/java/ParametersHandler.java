@@ -1,13 +1,12 @@
-import java.net.URLDecoder;
-import java.util.Map;
-
 public class ParametersHandler extends Handler {
 
     @Override
     public Response handleRequest(Request request) {
         Response response = new Response();
 
-        if (checkMethodAllowed(request, response)) return response;
+        if (checkMethodAllowed(request, response)) {
+            return response;
+        }
 
         String responseBody = parametersToString(request);
 

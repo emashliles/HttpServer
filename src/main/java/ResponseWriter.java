@@ -1,7 +1,7 @@
 import java.util.Map;
 
 public class ResponseWriter {
-    public String responseString(Response response) {
+    public String writeHeaders(Response response) {
         String responseToWrite = "HTTP/1.1 " + response.getStatusCode();
 
         if(!response.getHeaders().isEmpty()) {

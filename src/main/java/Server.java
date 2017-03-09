@@ -28,15 +28,14 @@ public class Server implements Runnable{
                     request.setBody(parser.parseBody(request.getContentLength()));
                 }
 
-                Handler handler = router.find(request.path());
-
+                Handler handler = router.findHandler(request.path());
                 Response response = handler.handleRequest(request);
-                out.write(responseWriter.responseString(response).getBytes());
+
+                out.write(responseWriter.writeHeaders(response).getBytes());
 
                 if (response.getBody() != null || !request.httpMethod().equals(HttpMethod.HEAD.toString())) {
                     out.write(response.getBody());
                 }
-
             }
 
         } catch (Exception e) {

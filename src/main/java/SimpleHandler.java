@@ -10,16 +10,22 @@ public class SimpleHandler extends Handler {
         super();
         paths = new ArrayList<>();
         publicDirectory = new Directory(publicDir);
-        directoryFiles();
+        addDirectoryFilePaths();
     }
 
     @Override
     public Response handleRequest(Request request) {
         Response response = new Response();
 
-        if (checkMethodAllowed(request, response)) return response;
-        if (handlePatchRequest(request, response)) return response;
-        if (handleLogsRequest(request, response)) return response;
+        if (checkMethodAllowed(request, response)) {
+            return response;
+        }
+        if (handlePatchRequest(request, response)) {
+            return response;
+        }
+        if (handleLogsRequest(request, response)) {
+            return response;
+        }
 
         response.addHeader("Content-Type", contentType(request.path()));
         response.setBody(getBody(request));
@@ -76,7 +82,7 @@ public class SimpleHandler extends Handler {
     }
 
     private boolean handlePatchRequest(Request request, Response response) {
-        if (request.httpMethod().equals(HttpMethod.PATCH.toString()) && request.ifMatch().equals(publicDirectory.getHash("patch-content.txt"))) {
+        if (request.httpMethod().equals(HttpMethod.PATCH.toString()) && request.ifMatch().equals(publicDirectory.getFileHash("patch-content.txt"))) {
             response.setStatusCode(HttpStatus.NoContent.code());
             publicDirectory.setFileContents("patch-content.txt", request.body(), false);
             return true;
@@ -125,7 +131,7 @@ public class SimpleHandler extends Handler {
         return body.getBytes();
     }
 
-    private void directoryFiles() {
+    private void addDirectoryFilePaths() {
         for (int i = 0; i < publicDirectory.getFiles().size(); i++) {
             paths.add("/" + publicDirectory.getFiles().get(i));
         }

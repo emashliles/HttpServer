@@ -12,6 +12,6 @@ public class ResponseTests {
 
         ResponseWriter writer = new ResponseWriter();
 
-        assertEquals("HTTP/1.1 200 OK\r\nAllow: PUT,GET", writer.responseString(response));
+        assertEquals("HTTP/1.1 200 OK\r\nAllow: PUT,GET", writer.writeHeaders(response));
     }
 }

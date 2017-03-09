@@ -1,4 +1,7 @@
 public class RedirectHandler extends Handler {
+
+    public static final String SERVER_URL = "http://localhost:5000/";
+
     @Override
     protected void addAllowedMethods() {
         allowedMethods.add(HttpMethod.GET.toString());
@@ -8,9 +11,8 @@ public class RedirectHandler extends Handler {
     public Response handleRequest(Request request) {
         Response response = new Response();
         response.setStatusCode(HttpStatus.Redirect.code());
-        response.setBody("http://localhost:5000/".getBytes());
-        response.addHeader("Location", "http://localhost:5000/");
-       // response.setLocation("Location: http://localhost:5000/");
+        response.setBody(SERVER_URL.getBytes());
+        response.addHeader("Location", SERVER_URL);
         return response;
     }
 

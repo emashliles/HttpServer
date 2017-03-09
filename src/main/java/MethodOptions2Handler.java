@@ -3,7 +3,9 @@ public class MethodOptions2Handler extends Handler {
     @Override
     public Response handleRequest(Request request) {
         Response response = new Response();
-        if (checkMethodAllowed(request, response)) return response;
+        if (checkMethodAllowed(request, response)) {
+            return response;
+        }
 
         response.setStatusCode(HttpStatus.OK.code());
         addOptionsHeader(request, response);

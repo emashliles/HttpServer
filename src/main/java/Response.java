@@ -27,14 +27,6 @@ public class Response {
         this.body = body;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public void addHeader(String key, String value) {
         headers.put(key, value);
     }

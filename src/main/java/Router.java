@@ -10,7 +10,7 @@ public class Router {
         notFoundHandler = new NotFoundHandler();
     }
 
-    public Handler find(String path) {
+    public Handler findHandler(String path) {
         for(Handler handler : handlers) {
             if(handler.canHandle(path)) {
                 return handler;

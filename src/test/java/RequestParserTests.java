@@ -24,7 +24,7 @@ public class RequestParserTests {
 
     @Test
     public void parseBody() {
-        ByteArrayInputStream in = new ByteArrayInputStream((exampleRequest + separator +exampleBody).getBytes());
+        ByteArrayInputStream in = new ByteArrayInputStream((exampleRequest + separator + exampleBody).getBytes());
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
         RequestParser parser = new RequestParser(reader);

@@ -10,14 +10,14 @@ import java.util.List;
 
 public class Directory {
 
-    private String directoryName;
+    private String directoryPath;
 
-    public Directory(String directoryName) {
-        this.directoryName = directoryName;
+    public Directory(String directoryPath) {
+        this.directoryPath = directoryPath;
     }
 
     public List<String> getFiles() {
-        File directory = new File(directoryName);
+        File directory = new File(directoryPath);
         List<String> files = new ArrayList<>();
 
         for(File file : directory.listFiles()) {
@@ -84,18 +84,6 @@ public class Directory {
         return fileBytes;
     }
 
-    private int getRangeSize(int rangeStart, int rangeEnd) {
-        int rangeSize;
-        if(rangeEnd > rangeStart) {
-            rangeSize = (rangeEnd + 1) - rangeStart;
-        }
-        else {
-            rangeEnd += rangeStart;
-            rangeSize = rangeEnd - rangeStart;
-        }
-        return rangeSize;
-    }
-
     public void createNewEmptyFile(String fileName) {
         File file = getFile(fileName);
         file.mkdir();
@@ -112,17 +100,12 @@ public class Directory {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    public String getHash(String fileName) {
+    public String getFileHash(String fileName) {
         File file = getFile(fileName);
-        String hash = "";
-
         MessageDigest rawHash = getRawHash(file);
-        hash = formatHash(rawHash);
-
-        return hash;
+        return  formatHash(rawHash);
     }
 
     private int checkRangeStartValue(int rangeStart, int rangeEnd, File file) {
@@ -148,6 +131,18 @@ public class Directory {
         return rangeEnd;
     }
 
+    private int getRangeSize(int rangeStart, int rangeEnd) {
+        int rangeSize;
+        if(rangeEnd > rangeStart) {
+            rangeSize = (rangeEnd + 1) - rangeStart;
+        }
+        else {
+            rangeEnd += rangeStart;
+            rangeSize = rangeEnd - rangeStart;
+        }
+        return rangeSize;
+    }
+
     private MessageDigest getRawHash(File file) {
         MessageDigest rawHash = null;
 
@@ -170,7 +165,7 @@ public class Directory {
     }
 
     private File getFile(String fileName) {
-        return new File(directoryName + "/" + fileName);
+        return new File(directoryPath + "/" + fileName);
     }
 
     private String formatHash(MessageDigest rawHash) {

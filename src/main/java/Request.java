@@ -107,7 +107,7 @@ public class Request {
         }
     }
 
-    private String[] getRawRanges(String s) {
-        return s.split("=")[1].split("-");
+    private String[] getRawRanges(String rangeHeaderValue) {
+        return rangeHeaderValue.split("=")[1].split("-");
     }
 }

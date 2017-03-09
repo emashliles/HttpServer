@@ -3,7 +3,6 @@ public class CookieHandler extends Handler {
     @Override
     public Response handleRequest(Request request) {
         Response response = new Response();
-
         response.setStatusCode(HttpStatus.OK.code());
 
         if(request.path().equals("/eat_cookie")) {
@@ -12,7 +11,6 @@ public class CookieHandler extends Handler {
         }
         else {
             response.setBody("Eat".getBytes());
-
             String cookieData = "";
 
                 if(request.parameters().get("type") != null ) {
@@ -20,7 +18,6 @@ public class CookieHandler extends Handler {
                 }
             response.addHeader("Set-Cookie", cookieData);
         }
-
         return response;
     }
 

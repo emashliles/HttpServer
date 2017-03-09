@@ -9,7 +9,7 @@ public class ResponseWriterTests {
         response.setStatusCode("200 OK");
 
         ResponseWriter writer = new ResponseWriter();
-        String responseString = writer.responseString(response);
+        String responseString = writer.writeHeaders(response);
 
         assertEquals("HTTP/1.1 200 OK", responseString);
     }
