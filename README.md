@@ -2,7 +2,7 @@
 
 HTTP server built to Http specifications and to pass 8th Light Http server task. 
 
-## Run
+## Build and Run
 
 Clone URL
 
@@ -22,11 +22,9 @@ To run the server, navigate to the target directory after building and run
 java -jar HttpServer-1.0.jar -d /path/to/public/dir
 ```
 
-To run the cob_spec test suite 
+The server will run on localhost:5000.
 
-```
-Use intellij for now
-```
+Instructions on running the cob_spec suite can be found [here] (https://github.com/8thlight/cob_spec). 
 
 ## Adding a new endpoint
 
